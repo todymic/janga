@@ -1,5 +1,11 @@
-import {Sequelize} from "sequelize";
+import {Sequelize} from "sequelize-typescript";
 import dotenv from "dotenv";
+import {Doctor} from "../model/Doctor";
+import {DoctorSpecialities} from "../model/DoctorSpecialities";
+import {Language} from "../model/Language";
+import {Speciality} from "../model/Speciality";
+import {DoctorLanguages} from "../model/DoctorLanguages";
+import {Patient} from "../model/Patient";
 
 dotenv.config();
 export class Database {
@@ -15,16 +21,20 @@ export class Database {
         this.connect();
     }
 
-    public connect() {
+    public async connect() {
 
         try {
 
-            this.sequelize = new Sequelize(this.DB_NAME, this.DB_USER, this.DB_PASSWORD, {
+            this.sequelize = new Sequelize({
+                database: this.DB_NAME,
+                username: this.DB_USER,
+                password: this.DB_PASSWORD,
                 host: this.DB_HOST,
-                dialect: "postgres"
-            } );
-            this.sequelize?.authenticate().then(() => {
-                console.log("DB Connected!");
+                dialect: "postgres",
+                models: [Doctor, DoctorSpecialities, Language, Speciality, DoctorLanguages, Patient],
+            });
+           await this.sequelize?.authenticate().then(() => {
+                console.log("DB Connected successfully.!");
             });
         } catch (e) {
             console.error(e);

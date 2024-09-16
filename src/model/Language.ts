@@ -1,13 +1,11 @@
-import {AutoIncrement, Column, Model, PrimaryKey, Table} from "sequelize-typescript";
+import {AutoIncrement, BelongsTo, Column, ForeignKey, Model, PrimaryKey, Table} from "sequelize-typescript";
+import {Speciality} from "./Speciality";
+import {Doctor} from "./Doctor";
 
-@Table
+@Table({
+    tableName: "Language"
+})
 export class Language extends Model<Language> {
-
-
-    @AutoIncrement
-    @Column({ allowNull: false })
-    @PrimaryKey
-    id !: number;
 
     @Column({ allowNull: false })
     name!: string;

@@ -5,9 +5,9 @@ import {DoctorSpecialities} from "./DoctorSpecialities";
 import {DoctorLanguages} from "./DoctorLanguages";
 
 @Table({
-    tableName: "Doctor"
+    tableName: "Patient",
 })
-export class Doctor extends Model<Doctor> {
+export class Patient extends Model<Patient> {
 
     @Column({ allowNull: false })
     firstname!: string;
@@ -21,19 +21,7 @@ export class Doctor extends Model<Doctor> {
     })
     description!: string;
 
-    @BelongsToMany(() => Language, () => DoctorLanguages)
-    languages ?: Array<Language & {DoctorLanguages: DoctorLanguages}>;
-
-    @BelongsToMany(() => Speciality, () => DoctorSpecialities)
-    specialities?: Array<Speciality & { DoctorSpecialities: DoctorSpecialities}>;
-
-    @Column({
-        type: DataType.JSON,
-    })
-    degrees!: string
-
     @Column
-    address !:string
-
+    address!: string;
 
 }
