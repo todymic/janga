@@ -1,6 +1,4 @@
-import {AutoIncrement, BelongsTo, Column, ForeignKey, Model, PrimaryKey, Table} from "sequelize-typescript";
-import {Speciality} from "./Speciality";
-import {Doctor} from "./Doctor";
+import {Column, Model, Table} from "sequelize-typescript";
 
 @Table({
     tableName: "Language"

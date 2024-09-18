@@ -1,8 +1,4 @@
-import {BelongsToMany, Column, DataType, HasMany, Model, Table} from "sequelize-typescript";
-import {Language} from "./Language";
-import {Speciality} from "./Speciality";
-import {DoctorSpecialities} from "./DoctorSpecialities";
-import {DoctorLanguages} from "./DoctorLanguages";
+import {Column, DataType, Model, Table} from "sequelize-typescript";
 
 @Table({
     tableName: "Patient",

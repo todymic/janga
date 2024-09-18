@@ -1,13 +1,26 @@
-import {BelongsToMany, Column, DataType, HasMany, Model, Table} from "sequelize-typescript";
+import {BelongsTo, BelongsToMany, Column, DataType, ForeignKey, HasMany, Model, Table} from "sequelize-typescript";
 import {Language} from "./Language";
 import {Speciality} from "./Speciality";
 import {DoctorSpecialities} from "./DoctorSpecialities";
 import {DoctorLanguages} from "./DoctorLanguages";
+import {Office} from "./Office";
+
+
+export interface IDoctor {
+    firstname: string;
+    lastname: string;
+    office: Office | null;
+    description?: string|null;
+    degrees?: string;
+    languages?: Language[] |null;
+    specialities?: Speciality[] | null;
+
+}
 
 @Table({
     tableName: "Doctor"
 })
-export class Doctor extends Model<Doctor> {
+export class Doctor extends Model implements IDoctor{
 
     @Column({ allowNull: false })
     firstname!: string;
@@ -30,10 +43,19 @@ export class Doctor extends Model<Doctor> {
     @Column({
         type: DataType.JSON,
     })
+    availabilities!: string
+
+    @Column({
+        type: DataType.JSON,
+    })
     degrees!: string
 
+    @ForeignKey(() => Office)
     @Column
-    address !:string
+    officeId !: number
+
+    @BelongsTo(() => Office)
+    office !: Office
 
 
 }
