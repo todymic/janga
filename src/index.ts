@@ -20,7 +20,7 @@ class App {
 
     private connectDB(): void {
          const db = new Database();
-         db.sequelize?.sync();
+         db.sequelize?.sync({ force: true });
     }
 
     private plugins(): void {
