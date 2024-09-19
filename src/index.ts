@@ -1,6 +1,9 @@
-import express, {Application } from "express";
+import express, {Application,Request, Response } from "express";
 import dotenv from "dotenv";
 import {Database} from "./config/Database";
+import {Doctor} from "./model/Doctor";
+import DoctorRouter from "./router/doctor.router";
+import OfficeRouter from "./router/office.router";
 
 dotenv.config();
 
@@ -15,7 +18,11 @@ class App {
     }
 
     private routes(): void {
-
+        this.app.route('/').get((req: Request, res: Response) => {
+            res.send('Welcome to the database!');
+        })
+        this.app.use('/api/doctor', DoctorRouter);
+        this.app.use('/api/office', OfficeRouter);
     }
 
     private connectDB(): void {

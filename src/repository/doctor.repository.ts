@@ -1,8 +1,9 @@
 import {Sequelize} from "sequelize-typescript";
 import {Doctor} from "../model/Doctor";
+import {Office} from "../model/Office";
 interface DoctorRepoInterface {
 
-    save(reqDoctor: Doctor): Promise<void>;
+    save(reqDoctor: Doctor): Promise<Doctor>;
     getById(doctorId: number): Promise<Doctor|null>;
     getAll(): Promise<Doctor[] | null>;
     update(doctor: Doctor): Promise<Doctor|null>;
@@ -34,6 +35,7 @@ export class DoctorRepository implements DoctorRepoInterface {
             return await Doctor.findAll();
         } catch (e) {
             console.log(e)
+            throw e;
         }
         return null;
     }
@@ -53,10 +55,10 @@ export class DoctorRepository implements DoctorRepoInterface {
         }
     }
 
-    async save(reqDoctor: Doctor): Promise<void> {
+    async save(reqDoctor: Doctor): Promise<Doctor> {
 
         try {
-            await Doctor.create({
+            return await Doctor.create({
                 firstname: reqDoctor.firstname,
                 lastname: reqDoctor.lastname,
                 description: reqDoctor.description,
@@ -64,9 +66,11 @@ export class DoctorRepository implements DoctorRepoInterface {
                 specialities: reqDoctor.specialities,
                 degrees: reqDoctor.degrees,
                 office: reqDoctor.office,
+            }, {
+                include: [Office],
             })
-        } catch (e) {
-            console.log(e)
+        } catch (e: any) {
+            throw new Error(e.message);
         }
 
     }

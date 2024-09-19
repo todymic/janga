@@ -52,10 +52,10 @@ export class Doctor extends Model implements IDoctor{
 
     @ForeignKey(() => Office)
     @Column
-    officeId !: number
+    officeId!: number
 
     @BelongsTo(() => Office)
-    office !: Office
+    office!: Office
 
 
 }

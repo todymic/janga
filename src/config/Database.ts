@@ -8,6 +8,7 @@ import {DoctorLanguages} from "../model/DoctorLanguages";
 import {Patient} from "../model/Patient";
 import {Office} from "../model/Office";
 import {DoctorRepository} from "../repository/doctor.repository";
+import {OfficeRepository} from "../repository/office.repository";
 
 dotenv.config();
 export class Database {
@@ -33,7 +34,15 @@ export class Database {
                 password: this.DB_PASSWORD,
                 host: this.DB_HOST,
                 dialect: "postgres",
-                models: [Doctor, DoctorSpecialities, Language, Speciality, DoctorLanguages, Patient, Office],
+                models: [
+                    Doctor,
+                    DoctorSpecialities,
+                    Language,
+                    Speciality,
+                    DoctorLanguages,
+                    Patient,
+                    Office
+                ],
             });
            await this.sequelize?.authenticate().then(() => {
                 console.log("DB Connected successfully.!");

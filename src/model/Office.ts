@@ -1,10 +1,20 @@
-import {Column, HasMany, Model, Table} from "sequelize-typescript";
+import {Column, HasMany, Model, Scopes, Table} from "sequelize-typescript";
 import {Doctor} from "./Doctor";
 
 @Table({
     tableName: 'Office'
 })
+
+@Scopes (() => ({
+    doctors: {
+        include: [Doctor]
+    }
+}))
 export class Office extends Model {
+
+    @Column
+    name!: string;
+
     @HasMany(() => Doctor)
     doctors!: Doctor[];
 
@@ -19,5 +29,4 @@ export class Office extends Model {
 
     @Column
     country!: string;
-
 }
