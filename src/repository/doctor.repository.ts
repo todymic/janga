@@ -4,15 +4,14 @@ import {Office} from "../model/Office";
 interface DoctorRepoInterface {
 
     save(reqDoctor: Doctor): Promise<Doctor>;
-    getById(doctorId: number): Promise<Doctor|null>;
+    getById(doctorId: string): Promise<Doctor | null>;
     getAll(): Promise<Doctor[] | null>;
     update(doctor: Doctor): Promise<Doctor|null>;
-    delete(doctorId: number): Promise<void>;
-
+    delete(doctorId: string): Promise<void>;
 }
 export class DoctorRepository implements DoctorRepoInterface {
 
-    async delete(doctorId: number): Promise<void> {
+    async delete(doctorId: string): Promise<void> {
 
         try {
 
@@ -32,15 +31,14 @@ export class DoctorRepository implements DoctorRepoInterface {
     async getAll(): Promise<Doctor[] | null> {
 
         try {
-            return await Doctor.findAll();
+            return await Doctor.findAll({ include: Office });
         } catch (e) {
             console.log(e)
             throw e;
         }
-        return null;
     }
 
-    async getById(doctorId: number): Promise<Doctor | null> {
+    async getById(doctorId: string): Promise<Doctor | null> {
         try {
             const doctor = await Doctor.findOne({ where: { id: doctorId } });
 

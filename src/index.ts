@@ -1,7 +1,7 @@
 import express, {Application,Request, Response } from "express";
 import dotenv from "dotenv";
 import {Database} from "./config/Database";
-import {Doctor} from "./model/Doctor";
+import bodyParser from "body-parser";
 import DoctorRouter from "./router/doctor.router";
 import OfficeRouter from "./router/office.router";
 
@@ -21,8 +21,8 @@ class App {
         this.app.route('/').get((req: Request, res: Response) => {
             res.send('Welcome to the database!');
         })
-        this.app.use('/api/doctor', DoctorRouter);
-        this.app.use('/api/office', OfficeRouter);
+        this.app.use('/api/doctors', DoctorRouter);
+        this.app.use('/api/offices', OfficeRouter);
     }
 
     private connectDB(): void {
@@ -33,6 +33,7 @@ class App {
     private plugins(): void {
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
+        this.app.use(bodyParser.json());
 
     }
 }
