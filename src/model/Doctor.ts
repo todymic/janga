@@ -1,32 +1,43 @@
-import {BelongsTo, BelongsToMany, Column, DataType, ForeignKey, HasMany, Model, Table} from "sequelize-typescript";
+import {
+    BelongsTo,
+    BelongsToMany,
+    Column,
+    DataType,
+    DefaultScope,
+    ForeignKey,
+    HasMany,
+    Model,
+    Table
+} from "sequelize-typescript";
 import {Language} from "./Language";
 import {Speciality} from "./Speciality";
 import {DoctorSpecialities} from "./DoctorSpecialities";
 import {DoctorLanguages} from "./DoctorLanguages";
 import {Office} from "./Office";
+import Person, {IPerson} from "./Person";
 
-
-export interface IDoctor {
-    firstname: string;
-    lastname: string;
-    office: Office | null;
-    description?: string|null;
+ interface IDoctor extends IPerson {
     degrees?: string;
     languages?: Language[] |null;
     specialities?: Speciality[] | null;
-
 }
 
 @Table({
     tableName: "Doctor"
 })
-export class Doctor extends Model implements IDoctor{
+@DefaultScope(() => ({
+    include: [Office, Language, Speciality]
+}))
+export class Doctor extends Person implements IDoctor {
 
     @Column({ allowNull: false })
     firstname!: string;
 
     @Column({ allowNull: false })
     lastname!: string;
+
+    @Column({ allowNull: false })
+    email!: string;
 
     @Column({
         type: DataType.TEXT,
@@ -35,7 +46,7 @@ export class Doctor extends Model implements IDoctor{
     description!: string;
 
     @BelongsToMany(() => Language, () => DoctorLanguages)
-    languages ?: Array<Language & {DoctorLanguages: DoctorLanguages}>;
+    languages?: Array<Language & {DoctorLanguages: DoctorLanguages}>;
 
     @BelongsToMany(() => Speciality, () => DoctorSpecialities)
     specialities?: Array<Speciality & { DoctorSpecialities: DoctorSpecialities}>;

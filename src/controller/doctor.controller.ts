@@ -1,21 +1,25 @@
 import {Doctor} from "../model/Doctor";
 import {Request, Response} from "express";
 import {DoctorRepository} from "../repository/doctor.repository";
-import {OfficeRepository} from "../repository/office.repository";
 
 class DoctorController {
     async update(req: Request, res: Response) {
         try {
 
             const doctorRepository = new DoctorRepository();
-            const doctors = await doctorRepository.getAll();
+            const updatedDoctor = await doctorRepository.update(req.params.id, req.body);
 
             res.status(200).send({
-                doctors: doctors
+                status: 'OK',
+                doctor: updatedDoctor
             })
 
         } catch (e) {
-            throw e;
+            console.log(e);
+            res.status(500).send({
+                status: false,
+                message: 'Error while updating doctor',
+            })
         }
     };
 
@@ -23,14 +27,19 @@ class DoctorController {
         try {
 
             const doctorRepository = new DoctorRepository();
-            const doctors = await doctorRepository.getAll();
+            await doctorRepository.delete(req.params.id);
 
             res.status(200).send({
-                doctors: doctors
+                status: true,
+                message: "Doctor deleted successfully",
             })
 
         } catch (e) {
-            throw e;
+            console.log(e);
+            res.status(500).send({
+                status: false,
+                message: 'Error while deleting doctor',
+            })
         }
     }
 
@@ -41,35 +50,38 @@ class DoctorController {
             const doctors = await doctorRepository.getAll();
 
             res.status(200).send({
+                status: true,
                 doctors: doctors
             })
 
         } catch (e) {
-            throw e;
+            console.log(e);
+            res.status(500).send({
+                status: false,
+                message: 'Error while getting all doctors',
+            })
         }
     };
 
     async new(req: Request, res: Response) {
         try {
-            const {firstname, lastname, description, office} = req.body;
-            const doctor: Doctor = new Doctor();
-            doctor.firstname = firstname;
-            doctor.lastname = lastname;
-            doctor.description = description;
-            doctor.office = office;
 
             //create office
             const doctorRepository = new DoctorRepository();
-            const newDoctor = await doctorRepository.save(doctor);
+            const newDoctor = await doctorRepository.save(req.body);
 
             res.status(201).send({
                 message: `Successfully created to ${newDoctor.firstname} ${newDoctor.lastname}`,
-                status: 'OK'
+                status: true
             });
 
 
         } catch (e) {
-            throw e;
+            console.log(e);
+            res.status(500).send({
+                status: false,
+                message: 'Error while creating new doctor',
+            })
         }
     }
 
@@ -77,14 +89,19 @@ class DoctorController {
         try {
 
             const doctorRepository = new DoctorRepository();
-            const doctors = await doctorRepository.getById(req.params.id);
+            const doctor = await doctorRepository.getById(req.params.id);
 
             res.status(200).send({
-                doctors: doctors
+                doctor: doctor,
+                status: true
             })
 
         } catch (e) {
-            throw e;
+            console.log(e);
+            res.status(500).send({
+                status: false,
+                message: 'Error while getting doctor profile',
+            })
         }
     }
 }

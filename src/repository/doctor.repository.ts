@@ -1,12 +1,14 @@
 import {Sequelize} from "sequelize-typescript";
 import {Doctor} from "../model/Doctor";
 import {Office} from "../model/Office";
+import {Language} from "../model/Language";
+import {Speciality} from "../model/Speciality";
 interface DoctorRepoInterface {
 
     save(reqDoctor: Doctor): Promise<Doctor>;
     getById(doctorId: string): Promise<Doctor | null>;
     getAll(): Promise<Doctor[] | null>;
-    update(doctor: Doctor): Promise<Doctor|null>;
+    update(id:string, doctor: Doctor): Promise<Doctor|null>;
     delete(doctorId: string): Promise<void>;
 }
 export class DoctorRepository implements DoctorRepoInterface {
@@ -23,6 +25,7 @@ export class DoctorRepository implements DoctorRepoInterface {
 
             await doctor.destroy();
 
+
         }catch (e) {
             throw e;
         }
@@ -31,7 +34,7 @@ export class DoctorRepository implements DoctorRepoInterface {
     async getAll(): Promise<Doctor[] | null> {
 
         try {
-            return await Doctor.findAll({ include: Office });
+            return await Doctor.findAll();
         } catch (e) {
             console.log(e)
             throw e;
@@ -39,6 +42,7 @@ export class DoctorRepository implements DoctorRepoInterface {
     }
 
     async getById(doctorId: string): Promise<Doctor | null> {
+
         try {
             const doctor = await Doctor.findOne({ where: { id: doctorId } });
 
@@ -65,17 +69,17 @@ export class DoctorRepository implements DoctorRepoInterface {
                 degrees: reqDoctor.degrees,
                 office: reqDoctor.office,
             }, {
-                include: [Office],
+                include: [Office, Language, Speciality],
             })
         } catch (e: any) {
-            throw new Error(e.message);
+            throw e;
         }
 
     }
 
-   async update(doctor: Doctor): Promise<Doctor> {
+   async update(id: string, doctor: Doctor): Promise<Doctor> {
         try {
-           const updatedDoctor = await Doctor.findOne({ where: { id: doctor.id } });
+           const updatedDoctor = await Doctor.findOne({ where: { id: id }, include: [Office, Language, Speciality] });
 
            if(!updatedDoctor) {
                throw new Error("Doctor not found");
@@ -100,7 +104,7 @@ export class DoctorRepository implements DoctorRepoInterface {
                 updatedDoctor.degrees = doctor.degrees;
             }
 
-            return updatedDoctor;
+            return updatedDoctor.save();
 
 
         } catch (e) {
