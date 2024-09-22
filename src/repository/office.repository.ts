@@ -3,15 +3,15 @@ import {Office} from "../model/Office";
 interface OfficeRepoInterface {
 
     save(reqOffice: Office): Promise<Office>;
-    getById(OfficeId: number): Promise<Office|null>;
+    getById(doctorId: string): Promise<Office | null>;
     getAll(): Promise<Office[] | null>;
-    update(Office: Office): Promise<Office|null>;
-    delete(OfficeId: number): Promise<void>;
+    update(id:string, doctor: Office): Promise<Office|null>;
+    delete(doctorId: string): Promise<void>;
 
 }
 export class OfficeRepository implements OfficeRepoInterface {
 
-    async delete(OfficeId: number): Promise<void> {
+    async delete(OfficeId: string): Promise<void> {
 
         try {
 
@@ -38,7 +38,7 @@ export class OfficeRepository implements OfficeRepoInterface {
         }
     }
 
-    async getById(OfficeId: number): Promise<Office | null> {
+    async getById(OfficeId: string): Promise<Office | null> {
         try {
             const office = await Office.findOne({ where: { id: OfficeId } });
 
@@ -69,7 +69,7 @@ export class OfficeRepository implements OfficeRepoInterface {
 
     }
 
-   async update(office: Office): Promise<Office> {
+   async update(id: string, office: Office): Promise<Office> {
         try {
            const updatedOffice = await Office.findOne({ where: { id: office.id } });
 

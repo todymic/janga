@@ -64,10 +64,12 @@ export class DoctorRepository implements DoctorRepoInterface {
                 firstname: reqDoctor.firstname,
                 lastname: reqDoctor.lastname,
                 description: reqDoctor.description,
+                email: reqDoctor.email,
                 languages: reqDoctor.languages,
                 specialities: reqDoctor.specialities,
                 degrees: reqDoctor.degrees,
                 office: reqDoctor.office,
+
             }, {
                 include: [Office, Language, Speciality],
             })
@@ -87,6 +89,8 @@ export class DoctorRepository implements DoctorRepoInterface {
 
             updatedDoctor.firstname = doctor.firstname;
             updatedDoctor.lastname = doctor.lastname;
+            updatedDoctor.description = doctor.description;
+            updatedDoctor.email = doctor.email;
 
             if(doctor.description) {
                 updatedDoctor.description = doctor.description;

@@ -1,8 +1,9 @@
 import {Doctor} from "../model/Doctor";
 import {Request, Response} from "express";
 import {DoctorRepository} from "../repository/doctor.repository";
+import CrudController from "./crud.controller";
 
-class DoctorController {
+class DoctorController extends CrudController {
     async update(req: Request, res: Response) {
         try {
 
@@ -63,7 +64,7 @@ class DoctorController {
         }
     };
 
-    async new(req: Request, res: Response) {
+    async create(req: Request, res: Response) {
         try {
 
             //create office
