@@ -5,6 +5,7 @@ export interface IPerson {
     lastname: string;
     email: string;
     description?: string|null;
+    active?: boolean;
 }
 abstract class Person extends Model implements IPerson {
 
@@ -16,6 +17,9 @@ abstract class Person extends Model implements IPerson {
 
     @Column({ allowNull: false })
     email!: string;
+
+    @Column({ allowNull: false, defaultValue: '0' })
+    active!: boolean;
 
     @Column({
         type: DataType.TEXT,

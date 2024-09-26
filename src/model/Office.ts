@@ -1,5 +1,6 @@
 import {Column, HasMany, Model, Scopes, Table} from "sequelize-typescript";
 import {Doctor} from "./Doctor";
+import {IAddress} from "./common/address";
 
 @Table({
     tableName: 'Office'
@@ -10,7 +11,7 @@ import {Doctor} from "./Doctor";
         include: [Doctor]
     }
 }))
-export class Office extends Model {
+export class Office extends Model implements IAddress {
 
     @Column
     name!: string;

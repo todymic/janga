@@ -71,7 +71,7 @@ export class OfficeRepository implements OfficeRepoInterface {
 
    async update(id: string, office: Office): Promise<Office> {
         try {
-           const updatedOffice = await Office.findOne({ where: { id: office.id } });
+           const updatedOffice = await Office.findOne({ where: { id: id } });
 
            if(!updatedOffice) {
                throw new Error("Office not found");
@@ -83,8 +83,7 @@ export class OfficeRepository implements OfficeRepoInterface {
             updatedOffice.zipcode = office.zipcode;
             updatedOffice.country = office.country;
 
-            return updatedOffice;
-
+            return updatedOffice.save();
 
         } catch (e) {
             console.log(e)

@@ -69,6 +69,7 @@ export class DoctorRepository implements DoctorRepoInterface {
                 specialities: reqDoctor.specialities,
                 degrees: reqDoctor.degrees,
                 office: reqDoctor.office,
+                active: reqDoctor.active ? "1" : "0",
 
             }, {
                 include: [Office, Language, Speciality],
@@ -91,6 +92,7 @@ export class DoctorRepository implements DoctorRepoInterface {
             updatedDoctor.lastname = doctor.lastname;
             updatedDoctor.description = doctor.description;
             updatedDoctor.email = doctor.email;
+            updatedDoctor.active = doctor.active ? true : false;
 
             if(doctor.description) {
                 updatedDoctor.description = doctor.description;

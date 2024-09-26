@@ -14,7 +14,7 @@ import {Speciality} from "./Speciality";
 import {DoctorSpecialities} from "./DoctorSpecialities";
 import {DoctorLanguages} from "./DoctorLanguages";
 import {Office} from "./Office";
-import Person, {IPerson} from "./Person";
+import Person, {IPerson} from "./common/Person";
 
  interface IDoctor extends IPerson {
     degrees?: string;
