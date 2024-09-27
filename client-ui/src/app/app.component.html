@@ -1,0 +1,8 @@
+
+<router-outlet />
+
+
+
+@if (isAdmin) {
+  <button type="submit" [disabled]="formIsInvalid" mat-flat-button [attr.data-test-id]="testId">Submit</button>
+}
