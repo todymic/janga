@@ -7,7 +7,7 @@ interface DoctorRepoInterface {
 
     save(reqDoctor: Doctor): Promise<Doctor>;
     getById(doctorId: string): Promise<Doctor | null>;
-    getAll(): Promise<Doctor[] | null>;
+    getAll(type: string): Promise<Doctor[] | null>;
     update(id:string, doctor: Doctor): Promise<Doctor|null>;
     delete(doctorId: string): Promise<void>;
 }
@@ -31,7 +31,7 @@ export class DoctorRepository implements DoctorRepoInterface {
         }
     }
 
-    async getAll(): Promise<Doctor[] | null> {
+    async getAll(type: string): Promise<Doctor[] | null> {
 
         try {
             return await Doctor.findAll();

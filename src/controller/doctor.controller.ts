@@ -48,7 +48,7 @@ class DoctorController extends CrudController {
         try {
 
             const doctorRepository = new DoctorRepository();
-            const doctors = await doctorRepository.getAll();
+            const doctors = await doctorRepository.getAll(req.params.type);
 
             res.status(200).send({
                 status: true,
