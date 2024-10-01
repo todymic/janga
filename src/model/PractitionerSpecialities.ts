@@ -1,13 +1,13 @@
 import {Column, ForeignKey, Model, Table} from "sequelize-typescript";
-import {Doctor} from "./Doctor";
+import {Practitioner} from "./Practitioner";
 import {Speciality} from "./Speciality";
 
 @Table
-export class DoctorSpecialities extends Model<DoctorSpecialities> {
+export class PractitionerSpecialities extends Model<PractitionerSpecialities> {
 
-    @ForeignKey(() => Doctor)
+    @ForeignKey(() => Practitioner)
     @Column
-    doctorId!: number
+    practitionerId!: number
 
     @ForeignKey(() => Speciality)
     @Column

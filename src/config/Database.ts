@@ -1,13 +1,13 @@
 import {Sequelize} from "sequelize-typescript";
 import dotenv from "dotenv";
-import {Doctor} from "../model/Doctor";
-import {DoctorSpecialities} from "../model/DoctorSpecialities";
+import {Practitioner} from "../model/Practitioner";
+import {PractitionerSpecialities} from "../model/PractitionerSpecialities";
 import {Language} from "../model/Language";
 import {Speciality} from "../model/Speciality";
-import {DoctorLanguages} from "../model/DoctorLanguages";
+import {PractitionerLanguages} from "../model/PractitionerLanguages";
 import {Patient} from "../model/Patient";
 import {Office} from "../model/Office";
-import {DoctorRepository} from "../repository/doctor.repository";
+import {PractitionerRepository} from "../repository/practitioner.repository";
 import {OfficeRepository} from "../repository/office.repository";
 
 dotenv.config();
@@ -35,11 +35,11 @@ export class Database {
                 host: this.DB_HOST,
                 dialect: "postgres",
                 models: [
-                    Doctor,
-                    DoctorSpecialities,
+                    Practitioner,
+                    PractitionerSpecialities,
                     Language,
                     Speciality,
-                    DoctorLanguages,
+                    PractitionerLanguages,
                     Patient,
                     Office
                 ],

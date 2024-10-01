@@ -11,8 +11,12 @@ export const routes: Routes = [
     title: 'Bienvenue'
   },
   {
-    path: ':partitionner',
+    path: ':practitionner/:id',
     component: ProfilComponent,
     title: 'Result page'
+  },
+  {
+    path: ":practitionners",
+    component: ListComponent
   }
 ];

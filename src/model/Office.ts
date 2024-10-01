@@ -1,5 +1,5 @@
 import {Column, HasMany, Model, Scopes, Table} from "sequelize-typescript";
-import {Doctor} from "./Doctor";
+import {Practitioner} from "./Practitioner";
 import {IAddress} from "./common/address";
 
 @Table({
@@ -7,8 +7,8 @@ import {IAddress} from "./common/address";
 })
 
 @Scopes (() => ({
-    doctors: {
-        include: [Doctor]
+    practitioners: {
+        include: [Practitioner]
     }
 }))
 export class Office extends Model implements IAddress {
@@ -16,8 +16,8 @@ export class Office extends Model implements IAddress {
     @Column
     name!: string;
 
-    @HasMany(() => Doctor)
-    doctors!: Doctor[];
+    @HasMany(() => Practitioner)
+    practitioners!: Practitioner[];
 
     @Column
     street!: string;

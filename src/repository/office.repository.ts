@@ -3,10 +3,10 @@ import {Office} from "../model/Office";
 interface OfficeRepoInterface {
 
     save(reqOffice: Office): Promise<Office>;
-    getById(doctorId: string): Promise<Office | null>;
+    getById(practitionerId: string): Promise<Office | null>;
     getAll(): Promise<Office[] | null>;
-    update(id:string, doctor: Office): Promise<Office|null>;
-    delete(doctorId: string): Promise<void>;
+    update(id:string, practitioner: Office): Promise<Office|null>;
+    delete(practitionerId: string): Promise<void>;
 
 }
 export class OfficeRepository implements OfficeRepoInterface {

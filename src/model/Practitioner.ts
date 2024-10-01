@@ -11,24 +11,24 @@ import {
 } from "sequelize-typescript";
 import {Language} from "./Language";
 import {Speciality} from "./Speciality";
-import {DoctorSpecialities} from "./DoctorSpecialities";
-import {DoctorLanguages} from "./DoctorLanguages";
+import {PractitionerSpecialities} from "./PractitionerSpecialities";
+import {PractitionerLanguages} from "./PractitionerLanguages";
 import {Office} from "./Office";
 import Person, {IPerson} from "./common/Person";
 
- interface IDoctor extends IPerson {
+ interface IPractitioner extends IPerson {
     degrees?: string;
     languages?: Language[] |null;
     specialities?: Speciality[] | null;
 }
 
 @Table({
-    tableName: "Doctor"
+    tableName: "Practitioner"
 })
 @DefaultScope(() => ({
     include: [Office, Language, Speciality]
 }))
-export class Doctor extends Person implements IDoctor {
+export class Practitioner extends Person implements IPractitioner {
 
     @Column({ allowNull: false })
     firstname!: string;
@@ -45,11 +45,12 @@ export class Doctor extends Person implements IDoctor {
     })
     description!: string;
 
-    @BelongsToMany(() => Language, () => DoctorLanguages)
-    languages?: Array<Language & {DoctorLanguages: DoctorLanguages}>;
+    @BelongsToMany(() => Language, () => PractitionerLanguages)
+    languages?: Array<Language & {PractitionerLanguages: PractitionerLanguages}>;
 
-    @BelongsToMany(() => Speciality, () => DoctorSpecialities)
-    specialities?: Array<Speciality & { DoctorSpecialities: DoctorSpecialities}>;
+    @BelongsToMany(() => Speciality, () => PractitionerSpecialities)
+    specialities?: Array<Speciality & { PractitionerSpecialities: PractitionerSpecialities}>;
+
 
     @Column({
         type: DataType.JSON,
