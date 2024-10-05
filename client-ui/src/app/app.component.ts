@@ -6,11 +6,21 @@ import {MatButton} from "@angular/material/button";
 import {NgOptimizedImage} from "@angular/common";
 import {HomeComponent} from "./home/home.component";
 import {MatNavList} from "@angular/material/list";
+import {HeaderComponent} from "./header/header.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, MatSlideToggleModule, FormsModule, MatButton, NgOptimizedImage, HomeComponent, MatNavList],
+  imports: [
+    RouterOutlet,
+    MatSlideToggleModule,
+    FormsModule,
+    MatButton,
+    NgOptimizedImage,
+    HomeComponent,
+    MatNavList,
+    HeaderComponent
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

@@ -39,6 +39,7 @@ export class Practitioner extends Person implements IPractitioner {
     @Column({ allowNull: false })
     email!: string;
 
+
     @Column({
         type: DataType.TEXT,
         allowNull: true,
