@@ -1,4 +1,4 @@
-import {Practitioner} from "../model/Practitioner";
+
 import {Request, Response} from "express";
 import {PractitionerRepository} from "../repository/practitioner.repository";
 import CrudController from "./crud.controller";
@@ -6,7 +6,6 @@ import CrudController from "./crud.controller";
 class PractitionerController extends CrudController {
     async update(req: Request, res: Response) {
         try {
-
             const practitionerRepository = new PractitionerRepository();
             const updatedPractitioner = await practitionerRepository.update(req.params.id, req.body);
 
@@ -16,7 +15,6 @@ class PractitionerController extends CrudController {
             })
 
         } catch (e) {
-            console.log(e);
             res.status(500).send({
                 status: false,
                 message: 'Error while updating practitioner',

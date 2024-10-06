@@ -9,6 +9,9 @@ export class Speciality extends Model<Speciality> {
     name!: string;
 
     @Column({ allowNull: false })
+    slug!: string;
+
+    @Column({ allowNull: false })
     lang!: string;
 
 }

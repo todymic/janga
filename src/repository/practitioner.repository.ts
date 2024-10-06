@@ -122,11 +122,7 @@ export class PractitionerRepository implements PractitionerRepoInterface {
 
     async getAllByType(type: string): Promise<Practitioner[]|undefined> {
         try {
-            return await Practitioner.findAll({
-                where: {
-
-                }
-            });
+            return await Practitioner.findAll({});
         } catch (e) {
             console.log(e)
             throw e;

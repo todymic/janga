@@ -1,5 +1,4 @@
 import {Request, Response} from "express";
-import BaseRouter from "../router/BaseRouter";
 
 interface ICrudController {
     create(req: Request, res: Response): void
