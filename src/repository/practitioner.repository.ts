@@ -3,6 +3,7 @@ import {Practitioner} from "../model/Practitioner";
 import {Office} from "../model/Office";
 import {Language} from "../model/Language";
 import {Speciality} from "../model/Speciality";
+import {Op} from "sequelize";
 interface PractitionerRepoInterface {
 
     save(reqPractitioner: Practitioner): Promise<Practitioner>;
@@ -120,11 +121,14 @@ export class PractitionerRepository implements PractitionerRepoInterface {
 
     }
 
-    async getAllByType(type: string): Promise<Practitioner[]|undefined> {
+    async getAllByType(type: string): Promise<Practitioner[] | undefined> {
         try {
             return await Practitioner.findAll({
-                where: {
-
+                include: {
+                    model: Speciality,
+                    where: {
+                        slug: {[ Op.eq ]: type }
+                    }
                 }
             });
         } catch (e) {

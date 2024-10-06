@@ -2,6 +2,7 @@
 import {Request, Response} from "express";
 import {PractitionerRepository} from "../repository/practitioner.repository";
 import CrudController from "./crud.controller";
+import {type} from "node:os";
 
 class PractitionerController extends CrudController {
     async update(req: Request, res: Response) {
@@ -104,7 +105,7 @@ class PractitionerController extends CrudController {
         }
     }
 
-    async getPractitionersList(req: Request, res: Response) {
+    async getPractitionersByTypeList(req: Request, res: Response) {
         try {
 
             const practitionerRepository = new PractitionerRepository();

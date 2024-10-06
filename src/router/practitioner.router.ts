@@ -1,14 +1,16 @@
 import PractitionerController from "../controller/practitioner.controller";
 import BaseRouter from "./BaseRouter";
 import validation from "../middleware/validation";
-import {practitionerPayload} from "../validator/practitioner.validator";
+import {createPractitionerPayload, updatePractitionerPayload} from "../validator/practitioner.validator";
 
 class PractitionerRouter extends BaseRouter {
     routes() {
-        this.router.post('/new', validation(practitionerPayload), PractitionerController.create)
+        this.router.post('/new', validation(createPractitionerPayload), PractitionerController.create)
+
+        this.router.get('/:type', PractitionerController.getPractitionersByTypeList)
         this.router.get('', PractitionerController.all)
         this.router.get('/:id', PractitionerController.profile)
-        this.router.put('/:id', validation(practitionerPayload), PractitionerController.update)
+        this.router.put('/:id', validation(updatePractitionerPayload), PractitionerController.update)
         this.router.delete('/:id', PractitionerController.delete)
     }
 
