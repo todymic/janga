@@ -8,7 +8,7 @@ class PractitionerRouter extends BaseRouter {
         this.router.post('/new', validation(practitionerPayload), PractitionerController.create)
         this.router.get('', PractitionerController.all)
         this.router.get('/:id', PractitionerController.profile)
-        this.router.put('/:id', PractitionerController.update)
+        this.router.put('/:id', validation(practitionerPayload), PractitionerController.update)
         this.router.delete('/:id', PractitionerController.delete)
     }
 

@@ -2,7 +2,7 @@
   "name": "janga",
   "version": "1.0.0",
   "scripts": {
-    "dev": "tsc && nodemon src/index.ts"
+    "dev": "nodemon --watch 'src/**/*' -e ts,tsx --exec ts-node ./src/index.ts"
   },
   "keywords": [],
   "author": "",

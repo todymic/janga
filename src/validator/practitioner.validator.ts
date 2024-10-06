@@ -13,6 +13,7 @@ const practitionerPayload = [
     body('specialities').notEmpty().withMessage('specialities is required'),
     body('specialities.*.name').notEmpty().isString().withMessage('specialities name is required'),
     body('specialities.*.slug').notEmpty().isString().withMessage('specialities slug is required')
+
 ];
 
 export {practitionerPayload}

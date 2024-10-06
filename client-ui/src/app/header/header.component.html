@@ -1,0 +1,24 @@
+<header class="brand-name wrapper">
+  <mat-toolbar color="primary">
+    <img class="brand-logo" ngSrc="assets/preview.jpg" alt="logo" aria-hidden="true" height="1300" width="1300">
+    <div fxHide.gt-xs>
+      <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </div>
+    <div>
+      <a routerLink="/home">Acceuil</a>
+    </div>
+    <div fxFlex fxLayout fxLayoutAlign="end" fxHide.xs >
+      <ul fxLayout fxLayoutGap="15px" class="navigation-items">
+        <li>
+          <a routerLink="/about">A propos</a>
+        </li>
+        <li>
+          <a routerLink="/connexion" >Connexion</a>
+        </li>
+      </ul>
+    </div>
+
+  </mat-toolbar>
+</header>
