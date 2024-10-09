@@ -1,0 +1,30 @@
+version: "3.3"
+
+services:
+    node_api:
+        build:
+            context: .
+            dockerfile: docker/node/Dockerfile
+        volumes:
+            - ./api:/var/www/api
+        networks:
+            - monitoring
+
+    angular_client:
+        build:
+            context: .
+            dockerfile: docker/angular/Dockerfile
+        command: "npm start"
+        networks:
+            - monitoring
+        volumes:
+            - ./client:/var/www/client:delegated
+        ports:
+            - "3000:3000"
+
+volumes:
+    nodemodules: {}
+
+networks:
+    monitoring:
+        driver: bridge

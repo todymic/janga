@@ -243,7 +243,7 @@
   dependencies:
     tslib "^2.3.0"
 
-"@angular/material@^18.2.6":
+"@angular/material@~18.2.6":
   version "18.2.6"
   resolved "https://registry.npmjs.org/@angular/material/-/material-18.2.6.tgz"
   integrity sha512-ObxC/vomSb9QF3vIztuiInQzws+D6u09Dhfx6uNFjtyICqxEFpF7+Qx7QVDWrsuXOgxZTKgacK8f46iV8hWUfg==

@@ -1,38 +1,17 @@
 import { Routes } from '@angular/router';
-import {HOME} from "@angular/cdk/keycodes";
-import {HomeComponent} from "./home/home.component";
-import {ListComponent} from "./list/list.component";
-import {NotFoundComponent} from "./not-found/not-found.component";
-import {PractitionerComponent} from "./practitioner/practitioner.component";
+import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
 
 export const routes: Routes = [
   {
-    path: 'home',
-    component: HomeComponent,
-    title: 'Bienvenue'
+    path: 'admin',
+    loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)
   },
   {
     path: '',
-    redirectTo: '/home',
-    pathMatch: 'full'
+    loadChildren: () => import('./front/front.module').then(m => m.FrontModule)
   },
   {
-    path: ":practitioners",
-    children: [
-      {
-        path: '',
-        component: ListComponent,
-        title: 'Result page',
-      },
-      {
-        path: ':id',
-        component: PractitionerComponent,
-        title: 'Profile page'
-      }
-    ]
-  },
-  {
-    path: "**",
-    component: NotFoundComponent
+    path: '**',
+    component: PageNotFoundComponent
   }
 ];
