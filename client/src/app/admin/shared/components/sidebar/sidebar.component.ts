@@ -1,9 +1,13 @@
-import {Component, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, inject, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {MatSidenav, MatSidenavModule} from '@angular/material/sidenav';
 import {MatAnchor, MatButton} from "@angular/material/button";
 import {MatCheckbox} from "@angular/material/checkbox";
 import {FormsModule} from "@angular/forms";
-import {RouterOutlet} from "@angular/router";
+import {RouterLink, RouterOutlet} from "@angular/router";
+import {MatListModule} from '@angular/material/list';
+import {PractitionerService} from "../../../core/services/practitioner.service";
+import {Practitioner as IPractitioner} from "../../../core/interfaces/practitioner.interface";
+import {Practitioner} from "../../../core/models/practitioner.model";
 
 @Component({
   selector: 'app-sidebar',
@@ -14,7 +18,9 @@ import {RouterOutlet} from "@angular/router";
     MatAnchor,
     MatCheckbox,
     FormsModule,
-    RouterOutlet
+    RouterOutlet,
+    MatListModule,
+    RouterLink
   ],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss'
@@ -22,13 +28,13 @@ import {RouterOutlet} from "@angular/router";
 export class SidebarComponent implements OnChanges {
 
   @ViewChild('sidenav', {read: MatSidenav}) sidenav!: MatSidenav ;
-  // @Input() isMenuOpened!: boolean;
-  @Input() opened!: boolean;
+  @Input() isOpened!: boolean;
   events: string[] = [];
 
+
   ngOnChanges(changes: SimpleChanges): void {
-    if( 'opened' in changes) {
-      this.sidenav?.toggle(changes['opened'].currentValue)
+    if( 'isOpened' in changes) {
+      this.sidenav?.toggle(changes['isOpened'].currentValue)
     }
   }
 

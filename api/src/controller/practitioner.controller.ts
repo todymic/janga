@@ -11,7 +11,7 @@ class PractitionerController extends CrudController {
             const updatedPractitioner = await practitionerRepository.update(req.params.id, req.body);
 
             res.status(200).send({
-                status: 'OK',
+                status: true,
                 practitioner: updatedPractitioner
             })
 
@@ -71,7 +71,7 @@ class PractitionerController extends CrudController {
             const newPractitioner = await practitionerRepository.save(req.body);
 
             res.status(201).send({
-                message: `Successfully created to ${newPractitioner.firstname} ${newPractitioner.lastname}`,
+                practitioner: newPractitioner,
                 status: true
             });
 

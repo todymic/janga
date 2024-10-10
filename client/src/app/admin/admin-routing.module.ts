@@ -18,7 +18,7 @@ const routes: Routes = [
         loadChildren: () => import('./features/dashboard/dashboard.module').then(m => m.DashboardModule)
       },
       {
-        path: 'practitioner',
+        path: 'practitioners',
         loadChildren: () => import('./features/practitioner/practitioner.module').then(m => m.PractitionerModule)
       }
     ]

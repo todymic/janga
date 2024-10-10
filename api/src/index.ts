@@ -5,6 +5,9 @@ import bodyParser from "body-parser";
 import PractitionerRouter from "./router/practitioner.router";
 import OfficeRouter from "./router/office.router";
 
+import cors from "cors";
+
+
 dotenv.config();
 
 class App {
@@ -32,6 +35,7 @@ class App {
 
     private plugins(): void {
         this.app.use(express.json());
+        this.app.use(cors());
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(bodyParser.json());
     }

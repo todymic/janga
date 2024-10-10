@@ -11,4 +11,6 @@ import { PractitionerRoutingModule } from './practitioner-routing.module';
     PractitionerRoutingModule
   ]
 })
-export class PractitionerModule { }
+export class PractitionerModule {
+
+}
