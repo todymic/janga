@@ -107,12 +107,11 @@ class PractitionerController extends CrudController {
 
     async getPractitionersByTypeList(req: Request, res: Response) {
         try {
-
             const practitionerRepository = new PractitionerRepository();
-            const practitioner = await practitionerRepository.getAllByType(req.params.type);
+            const practitioners = await practitionerRepository.getAllByType(req.params.type);
 
             res.status(200).send({
-                practitioner: practitioner,
+                practitioners: practitioners,
                 status: true
             })
 

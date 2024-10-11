@@ -6,7 +6,7 @@ import {PractitionerEditComponent} from "./practitioner-edit.component";
 const routes: Routes = [
   {
     path: '',
-    component: PractitionerComponent
+    component: PractitionerComponent,
   },
   {
     path: 'edit/:id',

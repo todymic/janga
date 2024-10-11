@@ -40,8 +40,14 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Action </th>
       <td mat-cell *matCellDef="let row">
         <div class="example-button-row">
-          <a mat-flat-button (click)="goToEdit(row.id)²²  ">Edit</a>
-          <a mat-flat-button class="danger">Delete</a>
+          <button mat-icon-button (click)="onEditingPractitioner(row)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button (click)="onRemovingPractitioner(row)">
+            <mat-icon>remove</mat-icon>
+          </button>
+          <!--<a mat-flat-button >Edit</a>
+          <a mat-flat-button class="danger">Delete</a>-->
 
         </div>
       </td>

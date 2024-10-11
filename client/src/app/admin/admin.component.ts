@@ -19,6 +19,9 @@ import {SidebarComponent} from "./shared/components/sidebar/sidebar.component";
 export class AdminComponent {
   opened!: boolean;
 
+  constructor() {
+  }
+
   onToggleMenuClicked($event: boolean) {
     this.opened = $event;
   }

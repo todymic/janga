@@ -5,11 +5,10 @@ import {createPractitionerPayload, updatePractitionerPayload} from "../validator
 
 class PractitionerRouter extends BaseRouter {
     routes() {
-        this.router.post('/new', validation(createPractitionerPayload), PractitionerController.create)
-
+        this.router.post('/new', validation(createPractitionerPayload), PractitionerController.create);
+        this.router.get('/:id/profile', PractitionerController.profile)
         this.router.get('/:type', PractitionerController.getPractitionersByTypeList)
         this.router.get('', PractitionerController.all)
-        this.router.get('/:id', PractitionerController.profile)
         this.router.put('/:id', validation(updatePractitionerPayload), PractitionerController.update)
         this.router.delete('/:id', PractitionerController.delete)
     }
