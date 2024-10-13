@@ -4,13 +4,17 @@ import {Office} from "../model/Office";
 import {Language} from "../model/Language";
 import {Speciality} from "../model/Speciality";
 import {Op} from "sequelize";
+import slugify from "slugify";
 interface PractitionerRepoInterface {
-
     save(reqPractitioner: Practitioner): Promise<Practitioner>;
     getById(practitionerId: string): Promise<Practitioner | null>;
     getAll(type: string): Promise<Practitioner[] | null>;
     update(id:string, practitioner: Practitioner): Promise<Practitioner|null>;
     delete(practitionerId: string): Promise<void>;
+}
+
+interface PractitionerUpSet {
+
 }
 export class PractitionerRepository implements PractitionerRepoInterface {
 
@@ -61,18 +65,27 @@ export class PractitionerRepository implements PractitionerRepoInterface {
     async save(reqPractitioner: Practitioner): Promise<Practitioner> {
 
         try {
-            return await Practitioner.create({
+
+            let newPractitioner = {
                 firstname: reqPractitioner.firstname,
                 lastname: reqPractitioner.lastname,
                 description: reqPractitioner.description,
                 email: reqPractitioner.email,
                 languages: reqPractitioner.languages,
-                specialities: reqPractitioner.specialities,
                 degrees: reqPractitioner.degrees,
                 office: reqPractitioner.office,
                 active: reqPractitioner.active ? "1" : "0",
+                specialities: reqPractitioner.specialities
+            }
 
-            }, {
+            if(newPractitioner.specialities) { // create slug based on name
+                newPractitioner.specialities.map(speciality => {
+                    return speciality.slug = slugify(speciality.name, { lower: true })
+                });
+            }
+
+
+            return await Practitioner.create(newPractitioner, {
                 include: [Office, Language, Speciality],
             })
         } catch (e: any) {

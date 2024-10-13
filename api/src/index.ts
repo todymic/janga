@@ -28,9 +28,11 @@ class App {
         this.app.use('/api/offices', OfficeRouter);
     }
 
+
     private connectDB(): void {
          const db = new Database();
          db.sequelize?.sync({ force: true });
+
     }
 
     private plugins(): void {
