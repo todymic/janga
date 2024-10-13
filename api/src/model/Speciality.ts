@@ -14,8 +14,4 @@ export class Speciality extends Model<Speciality> {
 
     @Column({ allowNull: false })
     lang!: string;
-
-    setDataValue(slug: any, value: string) {
-        super.setDataValue(slug, slugify(value));
-    }
 }
