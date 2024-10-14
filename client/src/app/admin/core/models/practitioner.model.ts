@@ -1,6 +1,7 @@
 import {Practitioner as IPractitioner} from "../interfaces/practitioner.interface";
 import {Language} from "../interfaces/language.interface";
 import {Speciality} from "../interfaces/speciality.interface";
+import {Office} from "../interfaces/office.interface";
 
 export class Practitioner implements IPractitioner {
   id!: string;
@@ -12,6 +13,7 @@ export class Practitioner implements IPractitioner {
   languages!: Language[] | null;
   lastname!: string;
   specialities!: Speciality[] | null;
+  office!: Office;
 
   static fromJson(practitionerJson: IPractitioner): Practitioner {
     return Object.assign(new Practitioner(), practitionerJson)
@@ -23,4 +25,5 @@ export class Practitioner implements IPractitioner {
 
     return practitioner;
   }
+
 }

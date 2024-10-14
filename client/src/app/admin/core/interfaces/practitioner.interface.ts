@@ -1,5 +1,6 @@
 import {Language} from "./language.interface";
 import {Speciality} from "./speciality.interface";
+import {Office} from "./office.interface";
 
 export interface Practitioner {
   id?: string,
@@ -9,6 +10,8 @@ export interface Practitioner {
   description?: string|null;
   active?: boolean;
   degrees?: string;
-  languages?: Language[] |null;
+  languages?: Language[] | null;
   specialities?: Speciality[] | null;
+  office: Office
+
 }

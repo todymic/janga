@@ -9,11 +9,8 @@ export interface GetPractitionersResponse {
   practitioners: Practitioner[];
 }
 
-
-
-export interface PostPractitionerResponse {
+export interface StatusExceptedResponse {
   status: boolean,
-  practitioner: Practitioner;
+  message: string
 }
-
 

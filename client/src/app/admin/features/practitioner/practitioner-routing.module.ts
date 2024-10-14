@@ -1,16 +1,20 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import {RouterModule, Routes, UrlSegment} from '@angular/router';
+import {PractitionerListComponent} from "./practitioner-list.component";
 import {PractitionerComponent} from "./practitioner.component";
-import {PractitionerEditComponent} from "./practitioner-edit.component";
 
 const routes: Routes = [
   {
     path: '',
-    component: PractitionerComponent,
+    component: PractitionerListComponent,
+  },
+  {
+    path: 'new',
+    component: PractitionerComponent
   },
   {
     path: 'edit/:id',
-    component: PractitionerEditComponent
+    component: PractitionerComponent
   }
 
 ];

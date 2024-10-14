@@ -2,12 +2,12 @@ import {AfterViewInit, Component, inject, Input, OnInit, ViewChild} from '@angul
 import {MatTable, MatTableDataSource, MatTableModule} from "@angular/material/table";
 import {PractitionerService} from "../../core/services/practitioner.service";
 import {Practitioner, Practitioner as IPractitioner} from "../../core/interfaces/practitioner.interface";
-import {MatFormField, MatFormFieldModule} from "@angular/material/form-field";
+import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInput, MatInputModule} from "@angular/material/input";
 import {MatSort, MatSortModule} from "@angular/material/sort";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatAnchor, MatButton, MatIconButton} from "@angular/material/button";
-import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {MatIcon} from "@angular/material/icon";
 
 @Component({
@@ -22,11 +22,11 @@ import {MatIcon} from "@angular/material/icon";
     MatInputModule,
     MatTableModule, MatPaginator, MatButton, MatAnchor, RouterLink, MatIconButton, MatIcon
   ],
-  templateUrl: './practitioner.component.html',
-  styleUrl: './practitioner.component.scss'
+  templateUrl: './practitioner-list.component.html',
+  styleUrl: './practitioner-list.component.scss'
 })
 
-export class PractitionerComponent implements AfterViewInit {
+export class PractitionerListComponent implements AfterViewInit {
   displayedColumns: string[] = ['id', 'lastname', 'firstname', 'email', 'active', 'action'];
   dataSource: MatTableDataSource<IPractitioner> = new MatTableDataSource();
   practitionerService = inject(PractitionerService);
