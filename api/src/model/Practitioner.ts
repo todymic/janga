@@ -1,4 +1,5 @@
 import {
+    BeforeBulkCreate, BeforeCreate,
     BelongsTo,
     BelongsToMany,
     Column,
@@ -16,7 +17,7 @@ import {PractitionerLanguages} from "./PractitionerLanguages";
 import {Office} from "./Office";
 import Person, {IPerson} from "./common/Person";
 
- interface IPractitioner extends IPerson {
+ export interface IPractitioner extends IPerson {
     degrees?: string;
     languages?: Language[] |null;
     specialities?: Speciality[] | null;
@@ -69,6 +70,5 @@ export class Practitioner extends Person implements IPractitioner {
 
     @BelongsTo(() => Office)
     office!: Office
-
 
 }

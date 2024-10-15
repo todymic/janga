@@ -5,7 +5,7 @@ class OfficeRouter extends BaseRouter {
     routes() {
         this.router.post('/new', OfficeController.create)
         this.router.get('/', OfficeController.all)
-        this.router.get('/:id', OfficeController.profile)
+        this.router.get('/:id', OfficeController.getOne)
         this.router.put('/:id', OfficeController.update)
         this.router.delete('/:id', OfficeController.delete)
     }

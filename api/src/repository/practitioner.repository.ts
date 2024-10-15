@@ -5,66 +5,61 @@ import {Language} from "../model/Language";
 import {Speciality} from "../model/Speciality";
 import {Op} from "sequelize";
 import slugify from "slugify";
+import {NotFoundException} from "../exceptions/NotFoundException";
+
 interface PractitionerRepoInterface {
     save(reqPractitioner: Practitioner): Promise<Practitioner>;
+
     getById(practitionerId: string): Promise<Practitioner | null>;
+
     getAll(type: string): Promise<Practitioner[] | null>;
-    update(id:string, practitioner: Practitioner): Promise<Practitioner|null>;
+
+    update(id: string, practitioner: Practitioner): Promise<Practitioner | null>;
+
     delete(practitionerId: string): Promise<void>;
 }
 
 interface PractitionerUpSet {
 
 }
+
 export class PractitionerRepository implements PractitionerRepoInterface {
 
     async delete(practitionerId: string): Promise<void> {
 
         try {
 
-            const practitioner = await Practitioner.findOne({ where: { id: practitionerId } });
+            const practitioner = await Practitioner.findOne({where: {id: practitionerId}});
 
-            if(!practitioner) {
-                throw new Error("Practitioner not found");
+            if (!practitioner) {
+                throw new Error(`Practitioner ${practitionerId} not found`);
             }
 
             await practitioner.destroy();
 
 
-        }catch (e) {
+        } catch (e) {
             throw e;
         }
     }
 
     async getAll(): Promise<Practitioner[] | null> {
 
-        try {
-            return await Practitioner.findAll();
-        } catch (e) {
-            console.log(e)
-            throw e;
-        }
+        return await Practitioner.findAll();
     }
 
-    async getById(practitionerId: string): Promise<Practitioner | null> {
+    async getById(practitionerId: string): Promise<Practitioner> {
 
-        try {
-            const practitioner = await Practitioner.findOne({ where: { id: practitionerId } });
+        const practitioner = await Practitioner.findOne({where: {id: practitionerId}});
 
-            if(!practitioner) {
-                throw new Error("Practitioner not found");
-            }
-
-            return practitioner;
-        } catch (e) {
-            console.log(e)
-            throw e;
+        if (!practitioner) {
+            throw new NotFoundException(`Practitioner ${practitionerId} not found`);
         }
+
+        return practitioner;
     }
 
     async save(reqPractitioner: Practitioner): Promise<Practitioner> {
-
-        try {
 
             let newPractitioner = {
                 firstname: reqPractitioner.firstname,
@@ -78,29 +73,21 @@ export class PractitionerRepository implements PractitionerRepoInterface {
                 specialities: reqPractitioner.specialities
             }
 
-            if(newPractitioner.specialities) { // create slug based on name
-                newPractitioner.specialities.map(speciality => {
-                    return speciality.slug = slugify(speciality.name, { lower: true })
-                });
-            }
 
-
-            return await Practitioner.create(newPractitioner, {
-                include: [Office, Language, Speciality],
-            })
-        } catch (e: any) {
-            throw e;
-        }
+            return await Practitioner.create(newPractitioner)
 
     }
 
-   async update(id: string, practitioner: Practitioner): Promise<Practitioner> {
+    async update(id: string, practitioner: Practitioner): Promise<Practitioner> {
         try {
-           const updatedPractitioner = await Practitioner.findOne({ where: { id: id }, include: [Office, Language, Speciality] });
+            const updatedPractitioner = await Practitioner.findOne({
+                where: {id: id},
+                include: [Office, Language, Speciality]
+            });
 
-           if(!updatedPractitioner) {
-               throw new Error("Practitioner not found");
-           }
+            if (!updatedPractitioner) {
+                throw new Error("Practitioner not found");
+            }
 
             updatedPractitioner.firstname = practitioner.firstname;
             updatedPractitioner.lastname = practitioner.lastname;
@@ -108,23 +95,23 @@ export class PractitionerRepository implements PractitionerRepoInterface {
             updatedPractitioner.email = practitioner.email;
             updatedPractitioner.active = practitioner.active ? true : false;
 
-            if(practitioner.description) {
+            if (practitioner.description) {
                 updatedPractitioner.description = practitioner.description;
             }
 
-            if(practitioner.languages) {
+            if (practitioner.languages) {
                 updatedPractitioner.languages = practitioner.languages;
             }
 
-            if(practitioner.specialities) {
+            if (practitioner.specialities) {
                 updatedPractitioner.specialities = practitioner.specialities;
             }
 
-            if(practitioner.degrees) {
+            if (practitioner.degrees) {
                 updatedPractitioner.degrees = practitioner.degrees;
             }
 
-            return updatedPractitioner.save();
+            return updatedPractitioner.update(updatedPractitioner);
 
 
         } catch (e) {
@@ -134,19 +121,14 @@ export class PractitionerRepository implements PractitionerRepoInterface {
 
     }
 
-    async getAllByType(type: string): Promise<Practitioner[] | undefined> {
-        try {
-            return await Practitioner.findAll({
-                include: {
-                    model: Speciality,
-                    where: {
-                        slug: {[ Op.eq ]: type }
-                    }
+    async getAllByType(type: string): Promise<Practitioner[]> {
+        return await Practitioner.findAll({
+            include: {
+                model: Speciality,
+                where: {
+                    slug: {[Op.eq]: type}
                 }
-            });
-        } catch (e) {
-            console.log(e)
-            throw e;
-        }
+            }
+        });
     }
 }

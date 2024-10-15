@@ -1,127 +1,103 @@
-
 import {Request, Response} from "express";
 import {PractitionerRepository} from "../repository/practitioner.repository";
 import CrudController from "./crud.controller";
-import {type} from "node:os";
+import {Practitioner} from "../model/Practitioner";
 
 class PractitionerController extends CrudController {
     async update(req: Request, res: Response) {
-        try {
-            const practitionerRepository = new PractitionerRepository();
-            const updatedPractitioner = await practitionerRepository.update(req.params.id, req.body);
 
-            res.status(200).send({
-                status: true,
-                practitioner: updatedPractitioner
-            })
+        const practitionerRepository = new PractitionerRepository();
 
-        } catch (e) {
-            res.status(500).send({
-                status: false,
-                message: 'Error while updating practitioner',
+        await practitionerRepository.update(req.params.id, req.body)
+            .then((updatedPractitioner: Practitioner) => {
+                res.status(200).send({
+                    status: true,
+                    practitioner: updatedPractitioner
+                })
             })
-        }
+            .catch(e => {
+                PractitionerController.sendError(res, e, 'Error when updating practitioner')
+            });
     };
 
     async delete(req: Request, res: Response) {
-        try {
 
-            const practitionerRepository = new PractitionerRepository();
-            await practitionerRepository.delete(req.params.id);
+        const practitionerRepository = new PractitionerRepository();
 
-            res.status(200).send({
-                status: true,
-                message: "Practitioner deleted successfully",
+        await practitionerRepository.delete(req.params.id)
+            .then(() => {
+                res.status(200).send({
+                    status: true,
+                    message: "Practitioner deleted successfully",
+                })
             })
-
-        } catch (e) {
-            console.log(e);
-            res.status(500).send({
-                status: false,
-                message: 'Error while deleting practitioner',
-            })
-        }
+            .catch(e => {
+                PractitionerController.sendError(res, e, 'Error when deleting practitioner')
+            });
     }
 
     async all(req: Request, res: Response) {
-        try {
 
-            const practitionerRepository = new PractitionerRepository();
-            const practitioners = await practitionerRepository.getAll();
+        const practitionerRepository = new PractitionerRepository();
 
-            res.status(200).send({
-                status: true,
-                practitioners: practitioners
+        await practitionerRepository.getAll()
+            .then((practitioners: Practitioner[] | null) => {
+                res.status(200).send({
+                    status: true,
+                    practitioners: practitioners
+                })
             })
-
-        } catch (e) {
-            console.log(e);
-            res.status(500).send({
-                status: false,
-                message: 'Error while getting all practitioners',
-            })
-        }
+            .catch(e => {
+                PractitionerController.sendError(res, e, 'Error when fetching all practitioners')
+            });
     };
 
     async create(req: Request, res: Response) {
-        try {
 
-            //create office
-            const practitionerRepository = new PractitionerRepository();
-            const newPractitioner = await practitionerRepository.save(req.body);
+        const practitionerRepository = new PractitionerRepository();
 
-            res.status(201).send({
-                practitioner: newPractitioner,
-                status: true
-            });
-
-
-        } catch (e) {
-            console.log(e);
-            res.status(500).send({
-                status: false,
-                message: 'Error while creating new practitioner',
+        await practitionerRepository.save(req.body)
+            .then((newPractitioner: Practitioner) => {
+                res.status(201).send({
+                    practitioner: newPractitioner,
+                    status: true
+                });
             })
-        }
+            .catch(e => {
+                PractitionerController.sendError(res, e, 'Error when creating practitioner')
+            });
     }
 
-    async profile(req: Request, res: Response) {
-        try {
+    async getOne(req: Request, res: Response) {
 
-            const practitionerRepository = new PractitionerRepository();
-            const practitioner = await practitionerRepository.getById(req.params.id);
+        const practitionerRepository = new PractitionerRepository();
 
-            res.status(200).send({
-                practitioner: practitioner,
-                status: true
+        await practitionerRepository.getById(req.params.id)
+            .then((practitioner: Practitioner) => {
+                res.status(200).send({
+                    practitioner: practitioner,
+                    status: true
+                })
             })
-
-        } catch (e) {
-            console.log(e);
-            res.status(500).send({
-                status: false,
-                message: 'Error while getting practitioner profile',
-            })
-        }
+            .catch(e => {
+                PractitionerController.sendError(res, e, 'Error when fetching a practitioner')
+            });
     }
 
     async getPractitionersByTypeList(req: Request, res: Response) {
-        try {
-            const practitionerRepository = new PractitionerRepository();
-            const practitioners = await practitionerRepository.getAllByType(req.params.type);
 
-            res.status(200).send({
-                practitioners: practitioners,
-                status: true
-            })
+        const practitionerRepository = new PractitionerRepository();
 
-        } catch (e) {
-            console.log(e);
-            res.status(500).send({
-                status: false,
-                message: 'Error while getting practitioner profile',
+        await practitionerRepository.getAllByType(req.params.type)
+            .then((practitioners: Practitioner[]) => {
+                res.status(200).send({
+                    practitioners: practitioners,
+                    status: true
+                })
             })
-        }
+            .catch(e => {
+                PractitionerController.sendError(res, e, 'Error when fetch practitioner by type')
+            });
     }
 }
 

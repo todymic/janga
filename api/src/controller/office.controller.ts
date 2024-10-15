@@ -6,23 +6,17 @@ import {OfficeRepository} from "../repository/office.repository";
 class OfficeController extends CrudController{
 
     async update(req: Request, res: Response) {
-        try {
-
-            const officeRepository = new OfficeRepository();
-            const updatedOffice = await officeRepository.update(req.params.id, req.body);
-
-            res.status(200).send({
-                status: 'OK',
-                office: updatedOffice
+        const officeRepository = new OfficeRepository();
+        await officeRepository.update(req.params.id, req.body)
+            .then((updatedOffice) => {
+                res.status(200).send({
+                    status: 'OK',
+                    office: updatedOffice
+                })
             })
-
-        } catch (e) {
-            console.log(e);
-            res.status(500).send({
-                status: false,
-                message: 'Error while updating office',
-            })
-        }
+            .catch(e => {
+                OfficeController.sendError(res, e, ' Error when updating the office')
+            });
     };
 
     async delete(req: Request, res: Response) {
@@ -87,7 +81,7 @@ class OfficeController extends CrudController{
         }
     }
 
-    async profile(req: Request, res: Response) {
+    async getOne(req: Request, res: Response) {
         try {
 
             const officeRepository = new OfficeRepository();

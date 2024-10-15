@@ -1,17 +1,29 @@
-import {Column, Model, Table} from "sequelize-typescript";
+import {
+    BeforeBulkCreate, BeforeBulkUpdate, BeforeCreate, BeforeUpdate, BeforeValidate,
+    Column,
+    Model,
+    Table, Unique
+} from "sequelize-typescript";
 import slugify from "slugify";
 
 @Table({
     tableName: "Speciality"
 })
-export class Speciality extends Model<Speciality> {
+export class Speciality extends Model {
 
     @Column({ allowNull: false })
     name!: string;
 
-    @Column({ allowNull: false })
+    @Unique
+    @Column({ allowNull: false})
     slug!: string;
 
-    @Column({ allowNull: false })
-    lang!: string;
+
+    @BeforeValidate
+    @BeforeUpdate
+    static onUpdateSlugify(instance: Speciality) {
+        instance.slug = slugify(instance.name, { lower: true });
+    }
+
+
 }
