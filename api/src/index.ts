@@ -2,12 +2,9 @@ import express, {Application} from "express";
 import dotenv from "dotenv";
 import {Database} from "./config/Database";
 import bodyParser from "body-parser";
-import PractitionerRouter from "./router/practitioner.router";
-import OfficeRouter from "./router/office.router";
 
 import cors from "cors";
-import SpecialityRouter from "./router/speciality.router";
-import LanguageRouter from "./router/language.router";
+import {Routes} from "./routes";
 
 
 dotenv.config();
@@ -24,10 +21,8 @@ class App {
 
 
     private routes(): void {
-        this.app.use('/api/practitioners', PractitionerRouter);
-        this.app.use('/api/specialities', SpecialityRouter);
-        this.app.use('/api/offices', OfficeRouter);
-        this.app.use('/api/languages', LanguageRouter);
+        const router = new Routes(this.app);
+        router.routes();
     }
 
 
