@@ -6,46 +6,40 @@ import {Speciality} from "../model/Speciality";
 import {Op} from "sequelize";
 import slugify from "slugify";
 import {NotFoundException} from "../exceptions/NotFoundException";
+import {Service} from "typedi";
 
 interface PractitionerRepoInterface {
+
     save(reqPractitioner: Practitioner): Promise<Practitioner>;
 
-    getById(practitionerId: string): Promise<Practitioner | null>;
+    getById(practitionerId: string): Promise<Practitioner>;
 
-    getAll(type: string): Promise<Practitioner[] | null>;
+    getAll(where?: object): Promise<Practitioner[]>;
 
-    update(id: string, practitioner: Practitioner): Promise<Practitioner | null>;
+    update(id: string, practitioner: Practitioner): Promise<Practitioner>;
 
     delete(practitionerId: string): Promise<void>;
 }
 
-interface PractitionerUpSet {
 
-}
-
+@Service()
 export class PractitionerRepository implements PractitionerRepoInterface {
 
     async delete(practitionerId: string): Promise<void> {
 
-        try {
+        await Practitioner.findOne({where: {id: practitionerId}})
+            .then((practitioner: Practitioner | null) => {
+                if (!practitioner) {
+                    throw new NotFoundException(`Practitioner ${practitionerId} not found`);
+                }
 
-            const practitioner = await Practitioner.findOne({where: {id: practitionerId}});
-
-            if (!practitioner) {
-                throw new Error(`Practitioner ${practitionerId} not found`);
-            }
-
-            await practitioner.destroy();
-
-
-        } catch (e) {
-            throw e;
-        }
+                practitioner.destroy();
+            });
     }
 
-    async getAll(): Promise<Practitioner[] | null> {
+    async getAll(where?: object): Promise<Practitioner[]> {
 
-        return await Practitioner.findAll();
+        return await Practitioner.findAll(where);
     }
 
     async getById(practitionerId: string): Promise<Practitioner> {
@@ -61,57 +55,59 @@ export class PractitionerRepository implements PractitionerRepoInterface {
 
     async save(reqPractitioner: Practitioner): Promise<Practitioner> {
 
-            let newPractitioner = {
-                firstname: reqPractitioner.firstname,
-                lastname: reqPractitioner.lastname,
-                description: reqPractitioner.description,
-                email: reqPractitioner.email,
-                languages: reqPractitioner.languages,
-                degrees: reqPractitioner.degrees,
-                office: reqPractitioner.office,
-                active: reqPractitioner.active ? "1" : "0",
-                specialities: reqPractitioner.specialities
-            }
+        let newPractitioner = {
+            firstname: reqPractitioner.firstname,
+            lastname: reqPractitioner.lastname,
+            description: reqPractitioner.description,
+            email: reqPractitioner.email,
+            languages: reqPractitioner.languages,
+            degrees: reqPractitioner.degrees,
+            office: reqPractitioner.office,
+            active: reqPractitioner.active ? "1" : "0",
+            specialities: reqPractitioner.specialities
+        }
 
 
-            return await Practitioner.create(newPractitioner)
+        return await Practitioner.create(newPractitioner)
 
     }
 
     async update(id: string, practitioner: Practitioner): Promise<Practitioner> {
         try {
-            const updatedPractitioner = await Practitioner.findOne({
-                where: {id: id},
-                include: [Office, Language, Speciality]
-            });
+            return await Practitioner.findOne({
+                where: {id: id}
+            })
+                .then((updatedPractitioner: Practitioner | null) => {
 
-            if (!updatedPractitioner) {
-                throw new Error("Practitioner not found");
-            }
+                    if (!updatedPractitioner) {
+                        throw new NotFoundException(`Practitioner ${id} not found`);
+                    }
 
-            updatedPractitioner.firstname = practitioner.firstname;
-            updatedPractitioner.lastname = practitioner.lastname;
-            updatedPractitioner.description = practitioner.description;
-            updatedPractitioner.email = practitioner.email;
-            updatedPractitioner.active = practitioner.active ? true : false;
+                    updatedPractitioner.firstname = practitioner.firstname;
+                    updatedPractitioner.lastname = practitioner.lastname;
+                    updatedPractitioner.description = practitioner.description;
+                    updatedPractitioner.email = practitioner.email;
+                    updatedPractitioner.active = practitioner.active ? true : false;
 
-            if (practitioner.description) {
-                updatedPractitioner.description = practitioner.description;
-            }
+                    if (practitioner.description) {
+                        updatedPractitioner.description = practitioner.description;
+                    }
 
-            if (practitioner.languages) {
-                updatedPractitioner.languages = practitioner.languages;
-            }
+                    if (practitioner.languages) {
+                        updatedPractitioner.languages = practitioner.languages;
+                    }
 
-            if (practitioner.specialities) {
-                updatedPractitioner.specialities = practitioner.specialities;
-            }
+                    if (practitioner.specialities) {
+                        updatedPractitioner.specialities = practitioner.specialities;
+                    }
 
-            if (practitioner.degrees) {
-                updatedPractitioner.degrees = practitioner.degrees;
-            }
+                    if (practitioner.degrees) {
+                        updatedPractitioner.degrees = practitioner.degrees;
+                    }
 
-            return updatedPractitioner.update(updatedPractitioner);
+                    return updatedPractitioner.update(updatedPractitioner);
+
+                });
 
 
         } catch (e) {

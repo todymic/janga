@@ -1,13 +1,13 @@
-
 import e, {Request, Response} from "express";
 import CrudController from "./crud.controller";
 import {OfficeRepository} from "../repository/office.repository";
+import {Office} from "../model/Office";
 
-class OfficeController extends CrudController{
+class OfficeController extends CrudController {
 
     async update(req: Request, res: Response) {
         const officeRepository = new OfficeRepository();
-        await officeRepository.update(req.params.id, req.body)
+        await officeRepository.update(Number(req.params.id), req.body)
             .then((updatedOffice) => {
                 res.status(200).send({
                     status: 'OK',
@@ -20,85 +20,68 @@ class OfficeController extends CrudController{
     };
 
     async delete(req: Request, res: Response) {
-        try {
-
-            const officeRepository = new OfficeRepository();
-            await officeRepository.delete(req.params.id);
-
-            res.status(200).send({
-                status: true,
-                message: "Office deleted successfully",
+        const officeRepository = new OfficeRepository();
+        await officeRepository.delete(Number(req.params.id))
+            .then(() => {
+                res.status(200).send({
+                    status: true,
+                    message: "Office deleted successfully",
+                })
             })
+            .catch(e => {
+                OfficeController.sendError(res, e, ' Error when deleting the office')
+            });
 
-        } catch (e) {
-            console.log(e);
-            res.status(500).send({
-                status: false,
-                message: 'Error while deleting office',
-            })
-        }
     }
 
     async all(req: Request, res: Response) {
-        try {
-
-            const officeRepository = new OfficeRepository();
-            const offices = await officeRepository.getAll();
-
-            res.status(200).send({
-                status: true,
-                offices: offices
+        const officeRepository = new OfficeRepository();
+        await officeRepository.getAll()
+            .then((offices: Office[]) => {
+                res.status(200).send({
+                    status: true,
+                    offices: offices
+                })
             })
-
-        } catch (e) {
-            console.log(e);
-            res.status(500).send({
-                status: false,
-                message: 'Error while getting all offices',
+            .catch(() => {
+                OfficeController.sendError(res, e, 'Error while getting all offices')
             })
-        }
+        ;
     };
 
     async create(req: Request, res: Response) {
-        try {
 
-            //create office
-            const officeRepository = new OfficeRepository();
-            const newOffice = await officeRepository.save(req.body);
+        //create office
+        const officeRepository = new OfficeRepository();
+        await officeRepository.save(req.body)
+            .then((newOffice: Office) => {
 
-            res.status(201).send({
-                message: `Successfully created to ${newOffice.name}`,
-                status: true
-            });
+                res.status(201).send({
+                    office: newOffice,
+                    status: true
+                });
 
-
-        } catch (e) {
-            console.log(e);
-            res.status(500).send({
-                status: false,
-                message: 'Error while creating new office',
             })
-        }
+            .catch(e => {
+                OfficeController.sendError(res, e, 'Error while creating new office')
+            })
+        ;
     }
 
     async getOne(req: Request, res: Response) {
-        try {
 
-            const officeRepository = new OfficeRepository();
-            const office = await officeRepository.getById(req.params.id);
+        const officeRepository = new OfficeRepository();
 
-            res.status(200).send({
-                office: office,
-                status: true
+        await officeRepository.getById(Number(req.params.id))
+            .then((office: Office) => {
+                res.status(200).send({
+                    office: office,
+                    status: true
+                })
             })
-
-        } catch (e) {
-            console.log(e);
-            res.status(500).send({
-                status: false,
-                message: 'Error while getting office profile',
-            })
-        }
+            .catch(e => {
+                OfficeController.sendError(res, e, 'Error while fetching one  new office')
+            });
     }
 
 }

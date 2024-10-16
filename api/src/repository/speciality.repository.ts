@@ -1,22 +1,24 @@
 import {Speciality} from "../model/Speciality";
 import {NotFoundException} from "../exceptions/NotFoundException";
+import {Service} from "typedi";
+import {Language} from "../model/Language";
 
 interface SpecialityRepoInterface {
     save(reqSpeciality: Speciality): Promise<Speciality>;
 
-    getById(specialityId: string): Promise<Speciality | null>;
+    getById(specialityId: number): Promise<Speciality>;
 
-    getAll(type: string): Promise<Speciality[] | null>;
+    getAll(where?: object): Promise<Speciality[]>;
 
-    update(id: string, speciality: Speciality): Promise<Speciality | null>;
+    update(id: number, speciality: Speciality): Promise<Speciality>;
 
-    delete(specialityId: string): Promise<void>;
+    delete(specialityId: number): Promise<void>;
 }
 
-
+@Service()
 export class SpecialityRepository implements SpecialityRepoInterface {
 
-    async delete(specialityId: string): Promise<void> {
+    async delete(specialityId: number): Promise<void> {
 
         const speciality = await Speciality.findOne({where: {id: specialityId}});
 
@@ -27,12 +29,11 @@ export class SpecialityRepository implements SpecialityRepoInterface {
         await speciality.destroy();
     }
 
-    async getAll(): Promise<Speciality[] | null> {
-
-        return await Speciality.findAll();
+    async getAll(where?: object): Promise<Speciality[]> {
+        return await Speciality.findAll(where);
     }
 
-    async getById(specialityId: string): Promise<Speciality> {
+    async getById(specialityId: number): Promise<Speciality> {
 
         const speciality = await Speciality.findOne({where: {id: specialityId}});
 
@@ -53,7 +54,7 @@ export class SpecialityRepository implements SpecialityRepoInterface {
 
     }
 
-    async update(id: string, speciality: Speciality): Promise<Speciality | null> {
+    async update(id: number, speciality: Speciality): Promise<Speciality> {
 
         return Speciality.findOne({
             where: {

@@ -1,94 +1,84 @@
 import {Office} from "../model/Office";
+import {Service} from "typedi";
+import {NotFoundException} from "../exceptions/NotFoundException";
 
 interface OfficeRepoInterface {
 
     save(reqOffice: Office): Promise<Office>;
-    getById(practitionerId: string): Promise<Office | null>;
-    getAll(): Promise<Office[] | null>;
-    update(id:string, practitioner: Office): Promise<Office|null>;
-    delete(practitionerId: string): Promise<void>;
+
+    getById(officeId: number): Promise<Office>;
+
+    getAll(): Promise<Office[]>;
+
+    update(id: number, office: Office): Promise<Office>;
+
+    delete(officeId: number): Promise<void>;
 
 }
+
+@Service()
 export class OfficeRepository implements OfficeRepoInterface {
 
-    async delete(OfficeId: string): Promise<void> {
+    async delete(OfficeId: number): Promise<void> {
 
-        try {
+        await Office.findOne({where: {id: OfficeId}})
+            .then((office: Office | null) => {
 
-            const office = await Office.findOne({ where: { id: OfficeId } });
+                if (!office) {
+                    throw new NotFoundException(`Office ID ${OfficeId} not found`);
+                }
 
-            if(!office) {
-                throw new Error("Office not found");
-            }
+                office.destroy();
+            });
 
-            await office.destroy();
 
-        }catch (e) {
-            throw e;
-        }
     }
 
-    async getAll(): Promise<Office[] | null> {
-
-        try {
-            return await Office.findAll();
-        } catch (e) {
-            console.log(e)
-            throw e;
-        }
+    async getAll(where?: undefined): Promise<Office[]> {
+        return await Office.findAll(where);
     }
 
-    async getById(OfficeId: string): Promise<Office | null> {
-        try {
-            const office = await Office.findOne({ where: { id: OfficeId } });
+    async getById(OfficeId: number): Promise<Office> {
 
-            if(!office) {
-                throw new Error("Office not found");
-            }
+        return await Office.findOne({where: {id: OfficeId}})
+            .then((office: Office | null) => {
 
-            return office;
-        } catch (e) {
-            console.log(e)
-            throw e;
-        }
+                if (!office) {
+                    throw new NotFoundException(`Office ${OfficeId} not found`);
+                }
+
+                return office;
+            });
+
     }
 
     async save(reqOffice: Office): Promise<Office> {
 
-        try {
-            return await Office.create({
-                name: reqOffice.name,
-                street: reqOffice.street,
-                zipcode: reqOffice.zipcode,
-                city: reqOffice.street,
-                country: reqOffice.country,
-            });
-        } catch (e: any) {
-            throw new Error(e.message);
-        }
+        return await Office.create({
+            name: reqOffice.name,
+            street: reqOffice.street,
+            zipcode: reqOffice.zipcode,
+            city: reqOffice.city,
+            country: reqOffice.country,
+        });
 
     }
 
-   async update(id: string, office: Office): Promise<Office> {
-        try {
-           const updatedOffice = await Office.findOne({ where: { id: id } });
+    async update(id: number, office: Office): Promise<Office> {
 
-           if(!updatedOffice) {
-               throw new Error("Office not found");
-           }
+        return await Office.findOne({where: {id: id}})
+            .then((updatedOffice: Office | null) => {
+                if (!updatedOffice) {
+                    throw new NotFoundException(`Office ${id} not found`);
+                }
 
-            updatedOffice.name = office.name;
-            updatedOffice.street = office.street;
-            updatedOffice.city = office.city;
-            updatedOffice.zipcode = office.zipcode;
-            updatedOffice.country = office.country;
+                updatedOffice.name = office.name;
+                updatedOffice.street = office.street;
+                updatedOffice.city = office.city;
+                updatedOffice.zipcode = office.zipcode;
+                updatedOffice.country = office.country;
 
-            return updatedOffice.save();
-
-        } catch (e) {
-            console.log(e)
-            throw e;
-        }
-
+                return updatedOffice.save();
+            });
     }
 }

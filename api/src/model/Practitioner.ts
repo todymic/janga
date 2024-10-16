@@ -21,13 +21,14 @@ import Person, {IPerson} from "./common/Person";
     degrees?: string;
     languages?: Language[] |null;
     specialities?: Speciality[] | null;
+    office: Office
 }
 
 @Table({
     tableName: "Practitioner"
 })
 @DefaultScope(() => ({
-    include: [Office, Language, Speciality]
+    order: ['id']
 }))
 export class Practitioner extends Person implements IPractitioner {
 
@@ -40,7 +41,6 @@ export class Practitioner extends Person implements IPractitioner {
     @Column({ allowNull: false })
     email!: string;
 
-
     @Column({
         type: DataType.TEXT,
         allowNull: true,
@@ -52,7 +52,6 @@ export class Practitioner extends Person implements IPractitioner {
 
     @BelongsToMany(() => Speciality, () => PractitionerSpecialities)
     specialities?: Array<Speciality & { PractitionerSpecialities: PractitionerSpecialities}>;
-
 
     @Column({
         type: DataType.JSON,

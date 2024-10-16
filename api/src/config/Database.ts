@@ -43,6 +43,7 @@ export class Database {
                     Patient,
                     Office
                 ],
+
             });
            await this.sequelize?.authenticate().then(() => {
                 console.log("DB Connected successfully.!");

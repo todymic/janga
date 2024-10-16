@@ -1,90 +1,77 @@
 import {Sequelize} from "sequelize-typescript";
 import {Language} from "../model/Language";
+import {Service} from "typedi";
+import {NotFoundException} from "../exceptions/NotFoundException";
+
 export interface LanguageRepoInterface {
 
-    save(reqLanguage: Language): Promise<void>;
-    getById(LanguageId: number): Promise<Language|null>;
-    getAll(): Promise<Language[] | null>;
-    update(Language: Language): Promise<Language|null>;
-    delete(LanguageId: number): Promise<void>;
+    save(reqLanguage: Language): Promise<Language>;
+
+    getById(LanguageId: number): Promise<Language>;
+
+    getAll(where?: object): Promise<Language[]>;
+
+    update(id: number, language: Language): Promise<Language>;
+
+    delete(languageId: number): Promise<void>;
 
 }
+
+@Service()
 export class LanguageRepository implements LanguageRepoInterface {
 
-    async delete(LanguageId: number): Promise<void> {
+    async delete(languageId: number): Promise<void> {
 
-        try {
+        await Language.findOne({where: {id: languageId}})
+            .then((language: Language | null) => {
 
-            const language = await Language.findOne({ where: { id: LanguageId } });
+                if (!language) {
+                    throw new NotFoundException(`Language ${languageId} not found`);
+                }
 
-            if(!Language) {
-                throw new Error("Language not found");
-            }
-
-            await Language.destroy();
-
-        }catch (e) {
-            throw e;
-        }
+                language.destroy();
+            });
     }
 
-    async getAll(): Promise<Language[] | null> {
-
-        try {
-            return await Language.findAll();
-        } catch (e) {
-            console.log(e)
-        }
-        return null;
+    async getAll(where?: object): Promise<Language[]> {
+        return await Language.findAll(where);
     }
 
-    async getById(LanguageId: number): Promise<Language | null> {
-        try {
-            const language = await Language.findOne({ where: { id: LanguageId } });
+    async getById(languageId: number): Promise<Language> {
 
-            if(!Language) {
-                throw new Error("Language not found");
-            }
+        return await Language.findOne({where: {id: languageId}})
+            .then((language: Language | null) => {
 
-            return language;
-        } catch (e) {
-            console.log(e)
-            throw e;
-        }
-    }
+                if (!language) {
+                    throw new NotFoundException(`Language ${languageId}not found`);
+                }
 
-    async save(reqLanguage: Language): Promise<void> {
-
-        try {
-            await Language.create({
-                name: reqLanguage.name,
-                code: reqLanguage.code
-            })
-        } catch (e) {
-            console.log(e)
-        }
+                return language;
+            });
 
     }
 
-   async update(language: Language): Promise<Language> {
-        try {
-           const updatedLanguage = await Language.findOne({ where: { id: language.id } });
+    async save(reqLanguage: Language): Promise<Language> {
 
-           if(!updatedLanguage) {
-               throw new Error("Language not found");
-           }
+        return await Language.create({
+            name: reqLanguage.name,
+            code: reqLanguage.code
+        })
+    }
 
+    async update(id: number, language: Language): Promise<Language> {
 
-            updatedLanguage.name = language.name;
-            updatedLanguage.code = language.code;
+        return await Language.findOne({where: {id: id}})
+            .then((updatedLanguage: Language | null) => {
 
-            return updatedLanguage;
+                if (!updatedLanguage) {
+                    throw new NotFoundException(`Language ${id} not found`);
+                }
 
+                updatedLanguage.name = language.name;
+                updatedLanguage.code = language.code;
 
-        } catch (e) {
-            console.log(e)
-            throw e;
-        }
-
+                return updatedLanguage.save();
+            });
     }
 }

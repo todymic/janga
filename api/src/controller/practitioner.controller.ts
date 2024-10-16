@@ -2,8 +2,26 @@ import {Request, Response} from "express";
 import {PractitionerRepository} from "../repository/practitioner.repository";
 import CrudController from "./crud.controller";
 import {Practitioner} from "../model/Practitioner";
+import {PractitionerService} from "../services/practitioner.service";
+import {Container} from "typedi";
 
 class PractitionerController extends CrudController {
+
+    async create(req: Request, res: Response) {
+        const practitionerService = Container.get<PractitionerService>(PractitionerService);
+
+        await practitionerService.createPractitioner(req.body)
+            .then((newPractitioner: Practitioner) => {
+                res.status(201).send({
+                    practitioner: newPractitioner,
+                    status: true
+                });
+            })
+            .catch(e => {
+                PractitionerController.sendError(res, e, 'Error when creating practitioner')
+            });
+    }
+
     async update(req: Request, res: Response) {
 
         const practitionerRepository = new PractitionerRepository();
@@ -51,22 +69,6 @@ class PractitionerController extends CrudController {
                 PractitionerController.sendError(res, e, 'Error when fetching all practitioners')
             });
     };
-
-    async create(req: Request, res: Response) {
-
-        const practitionerRepository = new PractitionerRepository();
-
-        await practitionerRepository.save(req.body)
-            .then((newPractitioner: Practitioner) => {
-                res.status(201).send({
-                    practitioner: newPractitioner,
-                    status: true
-                });
-            })
-            .catch(e => {
-                PractitionerController.sendError(res, e, 'Error when creating practitioner')
-            });
-    }
 
     async getOne(req: Request, res: Response) {
 

@@ -1,10 +1,14 @@
-import {Column, HasMany, Model, Scopes, Table} from "sequelize-typescript";
+import {Column, DefaultScope, HasMany, Model, Scopes, Table} from "sequelize-typescript";
 import {Practitioner} from "./Practitioner";
 import {IAddress} from "./common/address";
 
 @Table({
     tableName: 'Office'
 })
+
+@DefaultScope(() => ({
+    order: ['id']
+}))
 
 @Scopes (() => ({
     practitioners: {

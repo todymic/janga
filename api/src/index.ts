@@ -1,4 +1,4 @@
-import express, {Application, Request, Response} from "express";
+import express, {Application} from "express";
 import dotenv from "dotenv";
 import {Database} from "./config/Database";
 import bodyParser from "body-parser";
@@ -6,12 +6,8 @@ import PractitionerRouter from "./router/practitioner.router";
 import OfficeRouter from "./router/office.router";
 
 import cors from "cors";
-import {Practitioner} from "./model/Practitioner";
-import {faker} from "@faker-js/faker";
-import {Speciality} from "./model/Speciality";
-import {Language} from "./model/Language";
-import {Office} from "./model/Office";
 import SpecialityRouter from "./router/speciality.router";
+import LanguageRouter from "./router/language.router";
 
 
 dotenv.config();
@@ -31,22 +27,13 @@ class App {
         this.app.use('/api/practitioners', PractitionerRouter);
         this.app.use('/api/specialities', SpecialityRouter);
         this.app.use('/api/offices', OfficeRouter);
+        this.app.use('/api/languages', LanguageRouter);
     }
 
 
     private connectDB(): void {
         const db = new Database();
         db.sequelize?.sync({force: true})
-            .then(async () => {
-                Speciality.create({
-                    name: 'dentiste generale'
-                }).then(spe => {
-                    // spe.update({
-                    //      name: 'medecin generale'
-                    // })
-
-                });
-            })
 
     }
 

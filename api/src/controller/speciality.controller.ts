@@ -8,7 +8,7 @@ class SpecialityController extends CrudController {
 
         const specialityRepository = new SpecialityRepository();
 
-        await specialityRepository.update(req.params.id, req.body)
+        await specialityRepository.update(Number(req.params.id), req.body)
             .then((data) => {
                 res.status(200).send({
                     status: true,
@@ -26,7 +26,7 @@ class SpecialityController extends CrudController {
 
         const specialityRepository = new SpecialityRepository();
 
-        await specialityRepository.delete(req.params.id)
+        await specialityRepository.delete(Number(req.params.id))
             .then(() => {
                 res.status(200).send({
                     status: true,
@@ -75,7 +75,7 @@ class SpecialityController extends CrudController {
 
         const specialityRepository = new SpecialityRepository();
 
-        await specialityRepository.getById(req.params.id)
+        await specialityRepository.getById(Number(req.params.id))
             .then((speciality: Speciality) => {
                 res.status(200).send({
                     speciality: speciality,
