@@ -106,7 +106,7 @@
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
   },
   "include": [
-    "src/swagger-output.json",
+    "src/docs/swagger-output.json",
     "src/**/*"
   ],
   "exclude": [

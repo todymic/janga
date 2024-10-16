@@ -4,7 +4,7 @@ import SpecialityRouter from "./speciality.router";
 import OfficeRouter from "./office.router";
 import LanguageRouter from "./language.router";
 import swaggerUi from "swagger-ui-express";
-import swaggerOutput from "../swagger_output.json";
+import swaggerOutput from "../docs/swagger_output.json";
 
 export class Routes {
     constructor(private app: Application) {}
