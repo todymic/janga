@@ -7,7 +7,7 @@ class LanguageRouter extends BaseRouter {
     routes() {
         this.router.post('/new', validation(languagePayload), LanguageController.create);
         this.router.get('/:id', LanguageController.getOne)
-        this.router.get('', LanguageController.all)
+        this.router.get('/', LanguageController.all)
         this.router.put('/:id', validation(languagePayload), LanguageController.update)
         this.router.delete('/:id', LanguageController.delete)
     }

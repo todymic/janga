@@ -43,7 +43,7 @@ export class LanguageRepository implements LanguageRepoInterface {
             .then((language: Language | null) => {
 
                 if (!language) {
-                    throw new NotFoundException(`Language ${languageId}not found`);
+                    throw new NotFoundException(`Language ${languageId} not found`);
                 }
 
                 return language;

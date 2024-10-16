@@ -1,8 +1,8 @@
-import {body, query} from "express-validator";
+import {body, param, query} from "express-validator";
 
 
 export const officePayload = [
-    query('id')
+    param('id')
         .optional()
         .isNumeric()
         .withMessage('Id must be numeric'),
