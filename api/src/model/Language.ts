@@ -1,10 +1,11 @@
 import {Column, DefaultScope, Model, Table} from "sequelize-typescript";
 
 @Table({
-    tableName: "Language"
+    tableName: "language"
 })
 @DefaultScope(() => ({
-    order: ['id']
+    order: ['id'],
+    attributes: ['id', 'name', 'code']
 }))
 export class Language extends Model {
 

@@ -38,13 +38,13 @@ export class OfficeRepository implements OfficeRepoInterface {
         return await Office.findAll(where);
     }
 
-    async getById(OfficeId: number): Promise<Office> {
+    async getById(officeId: number): Promise<Office> {
 
-        return await Office.findOne({where: {id: OfficeId}})
+        return await Office.findOne({where: {id: officeId}})
             .then((office: Office | null) => {
 
                 if (!office) {
-                    throw new NotFoundException(`Office ${OfficeId} not found`);
+                    throw new NotFoundException(`Office ${officeId} not found`);
                 }
 
                 return office;

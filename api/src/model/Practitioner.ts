@@ -25,27 +25,13 @@ import Person, {IPerson} from "./common/Person";
 }
 
 @Table({
-    tableName: "Practitioner"
+    tableName: "practitioner"
 })
 @DefaultScope(() => ({
-    order: ['id']
+    order: ['id'],
+    attributes: [ 'id', 'firstname', 'lastname', 'email', 'description', 'active' ]
 }))
 export class Practitioner extends Person implements IPractitioner {
-
-    @Column({ allowNull: false })
-    firstname!: string;
-
-    @Column({ allowNull: false })
-    lastname!: string;
-
-    @Column({ allowNull: false })
-    email!: string;
-
-    @Column({
-        type: DataType.TEXT,
-        allowNull: true,
-    })
-    description!: string;
 
     @BelongsToMany(() => Language, () => PractitionerLanguages)
     languages?: Array<Language & {PractitionerLanguages: PractitionerLanguages}>;

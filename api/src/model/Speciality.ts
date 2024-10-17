@@ -10,7 +10,8 @@ import slugify from "slugify";
     tableName: "Speciality"
 })
 @DefaultScope(() => ({
-    order: ['id']
+    order: ['id'],
+    attributes: ['id', 'name', 'slug']
 }))
 export class Speciality extends Model {
 
@@ -21,11 +22,20 @@ export class Speciality extends Model {
     @Column({ allowNull: false})
     slug!: string;
 
-
     @BeforeValidate
     @BeforeUpdate
     static onUpdateSlugify(instance: Speciality) {
-        instance.slug = slugify(instance.name, { lower: true });
+        this.slugify(instance);
+    }
+
+    private static slugify(instance: Speciality) {
+        instance.slug = slugify(instance.name, {lower: true})
+    }
+
+    @BeforeBulkCreate
+    @BeforeBulkUpdate
+    static bulkSlugify(instances: Speciality[]) {
+        instances.map((instance: any) => this.slugify(instance));
     }
 
 

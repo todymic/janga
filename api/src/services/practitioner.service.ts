@@ -7,13 +7,16 @@ import {Speciality} from "../model/Speciality";
 import {OfficeRepository} from "../repository/office.repository";
 import {SpecialityRepository} from "../repository/speciality.repository";
 import {LanguageRepository} from "../repository/language.repository";
+import {Op} from "sequelize";
+import {NotFoundException} from "../exceptions/NotFoundException";
 
 export interface PractitionerRequest {
-    firstname: string
-    lastname: string
-    description: string
-    email: string
-    officeId?: number,
+    firstname: string,
+    lastname: string,
+    description: string,
+    email: string,
+    active: boolean,
+    officeId: number,
     languages?: Array<Number>
     specialities?: Array<Number>
 }
@@ -25,43 +28,115 @@ export class PractitionerService {
     private practitionerRepository!: PractitionerRepository
 
     @Inject()
-    private officeRepository!: OfficeRepository
-
-    @Inject()
     private languageRepository!: LanguageRepository
 
     @Inject()
     private specialityRepository!: SpecialityRepository
+
     async createPractitioner(bodyRequest: PractitionerRequest): Promise<Practitioner> {
 
         let newPractitioner = new Practitioner();
 
-        // get Office
-        if(bodyRequest.officeId) {
+        newPractitioner.firstname = bodyRequest.firstname;
+        newPractitioner.lastname = bodyRequest.lastname;
+        newPractitioner.email = bodyRequest.email;
+        newPractitioner.description = bodyRequest.description;
+        newPractitioner.active = bodyRequest.active;
+        newPractitioner.officeId = bodyRequest.officeId;
 
-            this.officeRepository.getById(bodyRequest.officeId)
-                .then((office: Office|null) => {
-                    newPractitioner.$set('office', office);
-                })
-        }
+        return this.practitionerRepository.save(newPractitioner)
+            .then(() => {
+                // get languages
+                if (bodyRequest.languages) {
 
-        // get languages
-        if(bodyRequest.languages) {
-            this.languageRepository.getAll({ where: { id: [ bodyRequest.languages ] }})
-                .then((languages: Language[]) => {
-                    newPractitioner.$set('languages', languages);
-                });
-        }
+                    this.languageRepository
+                        .getAll({
+                            where: {
+                                id: {
+                                    [Op.or]: [bodyRequest.languages]
+                                }
+                            }
+                        })
+                        .then((languages: Language[]) => {
+                            newPractitioner.$set('languages', languages);
+                        });
+                }
 
-        // get specialities
-        if(bodyRequest.specialities) {
-            this.specialityRepository.getAll({ where: { id: [ bodyRequest.specialities ] }})
-                .then((specialities: Speciality[]) => {
-                    newPractitioner.$set('specialities', specialities);
-                })
-        }
+                // get specialities
+                if (bodyRequest.specialities) {
+                    this.specialityRepository
+                        .getAll({
+                            where: {
+                                id: {
+                                    [Op.or]: [bodyRequest.specialities]
+                                }
+                            }
+                        })
+                        .then((specialities: Speciality[]) => {
+                            newPractitioner.$set('specialities', specialities);
+                        })
+                }
 
-        return this.practitionerRepository.save(newPractitioner);
+                return newPractitioner.save();
+            });
+
+
+    }
+
+    async updatePractitioner(id: number, bodyRequest: PractitionerRequest): Promise<Practitioner> {
+
+        return await this.practitionerRepository.getById(id)
+            .then(async (practitioner: Practitioner | null) => {
+
+                if (!practitioner) {
+                    throw new NotFoundException(`Practitioner ID ${id} is not found`);
+                }
+                practitioner.firstname = bodyRequest.firstname;
+                practitioner.lastname = bodyRequest.lastname;
+                practitioner.email = bodyRequest.email;
+                practitioner.description = bodyRequest.description;
+                practitioner.active = bodyRequest.active;
+                practitioner.officeId = bodyRequest.officeId;
+
+                await this.practitionerRepository.save(practitioner);
+                // get languages
+                if (bodyRequest.languages) {
+
+                    this.languageRepository
+                        .getAll({
+                            where: {
+                                id: {
+                                    [Op.or]: [bodyRequest.languages]
+                                }
+                            }
+                        })
+                        .then((languages: Language[]) => {
+
+                            practitioner.$set('languages', languages);
+                        });
+                }
+                // get specialities
+                if (bodyRequest.specialities) {
+                    this.specialityRepository
+                        .getAll({
+                            where: {
+                                id: {
+                                    [Op.or]: [bodyRequest.specialities]
+                                }
+                            }
+                        })
+                        .then((specialities: Speciality[]) => {
+                            practitioner.$set('specialities', specialities);
+                        });
+                }
+                return practitioner.save();
+            })
+
+
+
+
+
+
     }
 
 }

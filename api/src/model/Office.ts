@@ -7,7 +7,8 @@ import {IAddress} from "./common/address";
 })
 
 @DefaultScope(() => ({
-    order: ['id']
+    order: ['id'],
+    attributes: [ 'id', 'name', 'street', 'city', 'zipcode', 'country' ]
 }))
 
 @Scopes (() => ({

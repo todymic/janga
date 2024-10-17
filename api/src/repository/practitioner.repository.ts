@@ -12,20 +12,20 @@ interface PractitionerRepoInterface {
 
     save(reqPractitioner: Practitioner): Promise<Practitioner>;
 
-    getById(practitionerId: string): Promise<Practitioner>;
+    getById(practitionerId: number): Promise<Practitioner>;
 
     getAll(where?: object): Promise<Practitioner[]>;
 
-    update(id: string, practitioner: Practitioner): Promise<Practitioner>;
+    update(id: number, practitioner: Practitioner): Promise<Practitioner>;
 
-    delete(practitionerId: string): Promise<void>;
+    delete(practitionerId: number): Promise<void>;
 }
 
 
 @Service()
 export class PractitionerRepository implements PractitionerRepoInterface {
 
-    async delete(practitionerId: string): Promise<void> {
+    async delete(practitionerId: number): Promise<void> {
 
         await Practitioner.findOne({where: {id: practitionerId}})
             .then((practitioner: Practitioner | null) => {
@@ -39,40 +39,34 @@ export class PractitionerRepository implements PractitionerRepoInterface {
 
     async getAll(where?: object): Promise<Practitioner[]> {
 
-        return await Practitioner.findAll(where);
+        return await Practitioner.findAll({
+            include: [ Office, Speciality, Language ]
+        });
     }
 
-    async getById(practitionerId: string): Promise<Practitioner> {
+    async getById(practitionerId: number): Promise<Practitioner> {
 
-        const practitioner = await Practitioner.findOne({where: {id: practitionerId}});
+        return await Practitioner
+            .findByPk(practitionerId, {
+                include: [ Office, Speciality, Language ]
+            })
+            .then((practitioner: Practitioner | null) => {
 
-        if (!practitioner) {
-            throw new NotFoundException(`Practitioner ${practitionerId} not found`);
-        }
+                if (!practitioner) {
+                    throw new NotFoundException(`Practitioner ${practitionerId} not found`);
+                }
 
-        return practitioner;
+                return practitioner;
+            });
+
+
     }
 
     async save(reqPractitioner: Practitioner): Promise<Practitioner> {
-
-        let newPractitioner = {
-            firstname: reqPractitioner.firstname,
-            lastname: reqPractitioner.lastname,
-            description: reqPractitioner.description,
-            email: reqPractitioner.email,
-            languages: reqPractitioner.languages,
-            degrees: reqPractitioner.degrees,
-            office: reqPractitioner.office,
-            active: reqPractitioner.active ? "1" : "0",
-            specialities: reqPractitioner.specialities
-        }
-
-
-        return await Practitioner.create(newPractitioner)
-
+        return await reqPractitioner.save();
     }
 
-    async update(id: string, practitioner: Practitioner): Promise<Practitioner> {
+    async update(id: number, practitioner: Practitioner): Promise<Practitioner> {
         try {
             return await Practitioner.findOne({
                 where: {id: id}

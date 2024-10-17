@@ -24,9 +24,9 @@ class PractitionerController extends CrudController {
 
     async update(req: Request, res: Response) {
 
-        const practitionerRepository = new PractitionerRepository();
+        const practitionerService = Container.get<PractitionerService>(PractitionerService);
 
-        await practitionerRepository.update(req.params.id, req.body)
+        await practitionerService.updatePractitioner(Number(req.params.id), req.body)
             .then((updatedPractitioner: Practitioner) => {
                 res.status(200).send({
                     status: true,
@@ -37,22 +37,6 @@ class PractitionerController extends CrudController {
                 PractitionerController.sendError(res, e, 'Error when updating practitioner')
             });
     };
-
-    async delete(req: Request, res: Response) {
-
-        const practitionerRepository = new PractitionerRepository();
-
-        await practitionerRepository.delete(req.params.id)
-            .then(() => {
-                res.status(200).send({
-                    status: true,
-                    message: "Practitioner deleted successfully",
-                })
-            })
-            .catch(e => {
-                PractitionerController.sendError(res, e, 'Error when deleting practitioner')
-            });
-    }
 
     async all(req: Request, res: Response) {
 
@@ -74,7 +58,7 @@ class PractitionerController extends CrudController {
 
         const practitionerRepository = new PractitionerRepository();
 
-        await practitionerRepository.getById(req.params.id)
+        await practitionerRepository.getById(Number(req.params.id))
             .then((practitioner: Practitioner) => {
                 res.status(200).send({
                     practitioner: practitioner,
@@ -83,6 +67,22 @@ class PractitionerController extends CrudController {
             })
             .catch(e => {
                 PractitionerController.sendError(res, e, 'Error when fetching a practitioner')
+            });
+    }
+
+    async delete(req: Request, res: Response) {
+
+        const practitionerRepository = new PractitionerRepository();
+
+        await practitionerRepository.delete(Number(req.params.id))
+            .then(() => {
+                res.status(200).send({
+                    status: true,
+                    message: "Practitioner deleted successfully",
+                })
+            })
+            .catch(e => {
+                PractitionerController.sendError(res, e, 'Error when deleting practitioner')
             });
     }
 

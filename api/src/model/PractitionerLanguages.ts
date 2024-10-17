@@ -1,9 +1,14 @@
-import {Column, ForeignKey, Model, Table} from "sequelize-typescript";
+import {Column, DefaultScope, ForeignKey, Model, Table} from "sequelize-typescript";
 import {Practitioner} from "./Practitioner";
 import {Speciality} from "./Speciality";
 import {Language} from "./Language";
 
-@Table
+@Table({
+    tableName: 'practitioners_languages'
+})
+@DefaultScope(() => ({
+    attributes: [ 'practitionerId', 'LanguageId' ]
+}))
 export class PractitionerLanguages extends Model<PractitionerLanguages> {
 
     @ForeignKey(() => Practitioner)
