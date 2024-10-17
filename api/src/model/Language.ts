@@ -5,7 +5,9 @@ import {Column, DefaultScope, Model, Table} from "sequelize-typescript";
 })
 @DefaultScope(() => ({
     order: ['id'],
-    attributes: ['id', 'name', 'code']
+    attributes: {
+        exclude: [ 'createdAt', 'updatedAt']
+    }
 }))
 export class Language extends Model {
 

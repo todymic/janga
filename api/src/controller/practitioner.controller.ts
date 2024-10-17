@@ -18,6 +18,8 @@ class PractitionerController extends CrudController {
                 });
             })
             .catch(e => {
+
+
                 PractitionerController.sendError(res, e, 'Error when creating practitioner')
             });
     }

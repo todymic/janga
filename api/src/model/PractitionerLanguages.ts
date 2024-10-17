@@ -7,7 +7,9 @@ import {Language} from "./Language";
     tableName: 'practitioners_languages'
 })
 @DefaultScope(() => ({
-    attributes: [ 'practitionerId', 'LanguageId' ]
+    attributes: {
+        exclude: [ 'createdAt', 'updatedAt']
+    }
 }))
 export class PractitionerLanguages extends Model<PractitionerLanguages> {
 

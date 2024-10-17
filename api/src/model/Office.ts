@@ -3,12 +3,14 @@ import {Practitioner} from "./Practitioner";
 import {IAddress} from "./common/address";
 
 @Table({
-    tableName: 'Office'
+    tableName: 'office'
 })
 
 @DefaultScope(() => ({
     order: ['id'],
-    attributes: [ 'id', 'name', 'street', 'city', 'zipcode', 'country' ]
+    attributes: {
+        exclude: [ 'createdAt', 'updatedAt']
+    }
 }))
 
 @Scopes (() => ({

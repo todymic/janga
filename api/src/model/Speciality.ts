@@ -7,11 +7,13 @@ import {
 import slugify from "slugify";
 
 @Table({
-    tableName: "Speciality"
+    tableName: "speciality"
 })
 @DefaultScope(() => ({
     order: ['id'],
-    attributes: ['id', 'name', 'slug']
+    attributes: {
+        exclude: [ 'createdAt', 'updatedAt']
+    }
 }))
 export class Speciality extends Model {
 

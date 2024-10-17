@@ -16,7 +16,7 @@ interface PractitionerRepoInterface {
 
     getAll(where?: object): Promise<Practitioner[]>;
 
-    update(id: number, practitioner: Practitioner): Promise<Practitioner>;
+    update(practitioner: Practitioner, newData: Practitioner): Promise<Practitioner>;
 
     delete(practitionerId: number): Promise<void>;
 }
@@ -63,51 +63,30 @@ export class PractitionerRepository implements PractitionerRepoInterface {
     }
 
     async save(reqPractitioner: Practitioner): Promise<Practitioner> {
-        return await reqPractitioner.save();
+
+        let newPractitioner = new Practitioner();
+
+        newPractitioner.firstname = reqPractitioner.firstname;
+        newPractitioner.lastname = reqPractitioner.lastname;
+        newPractitioner.email = reqPractitioner.email;
+        newPractitioner.description = reqPractitioner.description;
+        newPractitioner.active = reqPractitioner.active;
+        newPractitioner.officeId = reqPractitioner.officeId;
+
+
+        return await newPractitioner.save();
     }
 
-    async update(id: number, practitioner: Practitioner): Promise<Practitioner> {
-        try {
-            return await Practitioner.findOne({
-                where: {id: id}
-            })
-                .then((updatedPractitioner: Practitioner | null) => {
+    async update(practitioner: Practitioner, newData: Practitioner): Promise<Practitioner> {
 
-                    if (!updatedPractitioner) {
-                        throw new NotFoundException(`Practitioner ${id} not found`);
-                    }
+        practitioner.firstname = newData.firstname;
+        practitioner.lastname = newData.lastname;
+        practitioner.email = newData.email;
+        practitioner.description = newData.description;
+        practitioner.active = newData.active;
+        practitioner.officeId = newData.officeId;
 
-                    updatedPractitioner.firstname = practitioner.firstname;
-                    updatedPractitioner.lastname = practitioner.lastname;
-                    updatedPractitioner.description = practitioner.description;
-                    updatedPractitioner.email = practitioner.email;
-                    updatedPractitioner.active = practitioner.active ? true : false;
-
-                    if (practitioner.description) {
-                        updatedPractitioner.description = practitioner.description;
-                    }
-
-                    if (practitioner.languages) {
-                        updatedPractitioner.languages = practitioner.languages;
-                    }
-
-                    if (practitioner.specialities) {
-                        updatedPractitioner.specialities = practitioner.specialities;
-                    }
-
-                    if (practitioner.degrees) {
-                        updatedPractitioner.degrees = practitioner.degrees;
-                    }
-
-                    return updatedPractitioner.update(updatedPractitioner);
-
-                });
-
-
-        } catch (e) {
-            console.log(e)
-            throw e;
-        }
+        return practitioner.update(practitioner);
 
     }
 
@@ -118,6 +97,15 @@ export class PractitionerRepository implements PractitionerRepoInterface {
                 where: {
                     slug: {[Op.eq]: type}
                 }
+            }
+        });
+    }
+
+
+    async findByEmail(email: string) {
+       return await Practitioner.findOne({
+            where: {
+                email: email
             }
         });
     }

@@ -6,7 +6,9 @@ import {Speciality} from "./Speciality";
     tableName: 'practitioners_specialities'
 })
 @DefaultScope(() => ({
-    attributes: [ 'practitionerId', 'specialityId' ]
+    attributes: {
+        exclude: [ 'createdAt', 'updatedAt']
+    }
 }))
 export class PractitionerSpecialities extends Model<PractitionerSpecialities> {
 

@@ -15,7 +15,7 @@ abstract class Person extends Model implements IPerson {
     @Column({ allowNull: false })
     lastname!: string;
 
-    @Column({ allowNull: false })
+    @Column({ allowNull: false, unique: true })
     email!: string;
 
     @Column({ allowNull: false, defaultValue: '0' })

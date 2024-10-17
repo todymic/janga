@@ -29,7 +29,9 @@ import Person, {IPerson} from "./common/Person";
 })
 @DefaultScope(() => ({
     order: ['id'],
-    attributes: [ 'id', 'firstname', 'lastname', 'email', 'description', 'active' ]
+    attributes: {
+        exclude: [ 'officeId', 'createdAt', 'updatedAt']
+    }
 }))
 export class Practitioner extends Person implements IPractitioner {
 

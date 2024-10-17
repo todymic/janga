@@ -1,10 +1,16 @@
-import {Column, DataType, Model, Table} from "sequelize-typescript";
+import {Column, DataType, DefaultScope, Model, Table} from "sequelize-typescript";
 import Person from "./common/Person";
 import {IAddress} from "./common/address";
 
 @Table({
-    tableName: "Patient",
+    tableName: "patient",
 })
+
+@DefaultScope(() => ({
+    attributes: {
+        exclude: [ 'createdAt', 'updatedAt']
+    }
+}))
 export class Patient extends Person implements IAddress {
 
     @Column
