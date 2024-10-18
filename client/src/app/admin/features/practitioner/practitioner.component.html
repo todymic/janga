@@ -32,27 +32,37 @@
     <!--  Active -->
     <mat-checkbox formControlName="active">Active?</mat-checkbox>
 
+    <h4>Office</h4>
     <div formGroupName="office">
-      <mat-form-field class="field-full">
-        <mat-label>Name</mat-label>
-        <input matInput formControlName="name" />
+      <mat-form-field>
+        <mat-label>Office</mat-label>
+        <select matNativeControl required>
+          <option value="volvo">Volvo</option>
+          <option value="saab">Saab</option>
+          <option value="mercedes">Mercedes</option>
+          <option value="audi">Audi</option>
+        </select>
       </mat-form-field>
-      <mat-form-field class="field-full">
-        <mat-label>Street</mat-label>
-        <input matInput formControlName="street" />
-      </mat-form-field>
-      <mat-form-field class="field-full">
-        <mat-label>city</mat-label>
-        <input matInput formControlName="city" />
-      </mat-form-field>
-      <mat-form-field class="field-full">
-        <mat-label>city</mat-label>
-        <input matInput formControlName="city" />
-      </mat-form-field>
-      <mat-form-field class="field-full">
-        <mat-label>ZipCode</mat-label>
-        <input matInput formControlName="zipcode" />
-      </mat-form-field>
+<!--      <mat-form-field class="field-full">-->
+<!--        <mat-label>Name</mat-label>-->
+<!--        <input matInput formControlName="name" />-->
+<!--      </mat-form-field>-->
+<!--      <mat-form-field class="field-full">-->
+<!--        <mat-label>Street</mat-label>-->
+<!--        <input matInput formControlName="street" />-->
+<!--      </mat-form-field>-->
+<!--      <mat-form-field class="field-full">-->
+<!--        <mat-label>city</mat-label>-->
+<!--        <input matInput formControlName="city" />-->
+<!--      </mat-form-field>-->
+<!--      <mat-form-field class="field-full">-->
+<!--        <mat-label>city</mat-label>-->
+<!--        <input matInput formControlName="city" />-->
+<!--      </mat-form-field>-->
+<!--      <mat-form-field class="field-full">-->
+<!--        <mat-label>ZipCode</mat-label>-->
+<!--        <input matInput formControlName="zipcode" />-->
+<!--      </mat-form-field>-->
 
     </div>
 

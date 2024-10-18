@@ -20,6 +20,10 @@ const routes: Routes = [
       {
         path: 'practitioners',
         loadChildren: () => import('./features/practitioner/practitioner.module').then(m => m.PractitionerModule)
+      },
+      {
+        path: 'offices',
+        loadChildren: () => import('./features/office/office.module').then(m => m.OfficeModule)
       }
     ]
   },

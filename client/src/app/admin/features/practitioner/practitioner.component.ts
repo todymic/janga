@@ -18,6 +18,7 @@ import {PractitionerService} from "../../core/services/practitioner.service";
 import {Practitioner} from "../../core/interfaces/practitioner.interface";
 import {Subscription} from "rxjs";
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
+import {BaseFormService} from "../../core/services/base-form.service";
 
 
 @Component({
@@ -66,6 +67,8 @@ export class PractitionerComponent implements OnInit, OnDestroy {
     plugins: 'lists link image table code help wordcount'
   };
 
+
+
   constructor() {
   }
 
@@ -73,9 +76,8 @@ export class PractitionerComponent implements OnInit, OnDestroy {
     this.currentId = this.route.snapshot.params['id'] ? this.route.snapshot.params['id'] : null;
     if(this.currentId) {
       this.subscribedService = this._practitionerService.getOne(this.currentId).subscribe(
-        (practitioner: Practitioner) => {
-          this.createForm.patchValue(practitioner)
-        });
+        (practitioner: Practitioner) => this.createForm.patchValue(practitioner)
+      );
     }
   }
 

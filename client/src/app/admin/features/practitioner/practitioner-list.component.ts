@@ -34,7 +34,6 @@ export class PractitionerListComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-
   constructor(private route: Router) {
     this.practitionerService.getAll().subscribe({
       next: res => this.dataSource.data = res,
