@@ -8,13 +8,13 @@ import {SnackbarService} from "./snackbar.service";
 })
 export class BaseFormService  {
   formBuilder: FormBuilder = inject(FormBuilder);
-  modelForm!: FormGroup;
+  formGroup!: FormGroup;
   snackBar: SnackbarService = inject(SnackbarService);
   dialog: ConfirmDialogService = inject(ConfirmDialogService);
 
   constructor() { }
   isValidField(lastname: string): boolean | undefined {
-    const field = this.modelForm.get(lastname);
+    const field = this.formGroup.get(lastname);
     return field?.invalid && (field?.dirty || field?.touched);
   }
 

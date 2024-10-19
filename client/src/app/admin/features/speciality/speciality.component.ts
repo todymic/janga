@@ -27,7 +27,7 @@ export class SpecialityComponent extends SingleComponent implements OnInit {
 
   override ngOnInit() {
 
-    this.baseForm.modelForm = this.baseForm.formBuilder.group({
+    this.formService.formGroup = this.formService.formBuilder.group({
       name: ['', Validators.required]
     })
     super.ngOnInit();
@@ -59,7 +59,7 @@ export class SpecialityComponent extends SingleComponent implements OnInit {
 
       this._specialityService.update(speciality).subscribe({
         next: () => {
-          this.baseForm.snackBar.open({content: "speciality successfully updated!"})
+          this.formService.snackBar.open({content: "speciality successfully updated!"})
 
           this._router.navigate(["admin", "specialities"]).then()
         }
@@ -69,7 +69,7 @@ export class SpecialityComponent extends SingleComponent implements OnInit {
 
       this._specialityService.create(speciality).subscribe({
         next: () => {
-          this.baseForm.snackBar.open({content: "speciality successfully added!"})
+          this.formService.snackBar.open({content: "speciality successfully added!"})
 
           this._router.navigate(["admin", "specialities"]).then()
         }
@@ -79,7 +79,7 @@ export class SpecialityComponent extends SingleComponent implements OnInit {
 
   onRemove() {
 
-    this.baseForm.dialog.confirm({
+    this.formService.dialog.confirm({
       title: "Confirm delete",
       content: "Are you sure to delete this speciality?"
     }).subscribe({
@@ -87,7 +87,7 @@ export class SpecialityComponent extends SingleComponent implements OnInit {
         if (confirm) {
           this._specialityService.delete(this.currentId).subscribe({
             next: () => {
-              this.baseForm.snackBar.open({content: "speciality successfully deleted!"})
+              this.formService.snackBar.open({content: "speciality successfully deleted!"})
 
               this._router.navigate(["admin", "specialities"]).then()
             }

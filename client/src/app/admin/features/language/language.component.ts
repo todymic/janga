@@ -29,7 +29,7 @@ export class LanguageComponent  extends SingleComponent implements OnInit, Singl
 
   override ngOnInit() {
 
-    this.baseForm.modelForm = this.baseForm.formBuilder.group({
+    this.formService.formGroup = this.formService.formBuilder.group({
       name: ['', Validators.required],
       code: ['', Validators.required]
     })
@@ -50,7 +50,7 @@ export class LanguageComponent  extends SingleComponent implements OnInit, Singl
   }
 
   onRemove() {
-    this.baseForm.dialog.confirm({
+    this.formService.dialog.confirm({
       title: "Confirm delete",
       content: "Are you sure to delete?"
     }).subscribe({
@@ -60,7 +60,7 @@ export class LanguageComponent  extends SingleComponent implements OnInit, Singl
 
           this._languageService.delete(this.currentId ).subscribe({
             next: () => {
-              this.baseForm.snackBar.open({ content: "language successfully deleted!" })
+              this.formService.snackBar.open({ content: "language successfully deleted!" })
               this._router.navigate(["admin", "languages"]).then()
             }
           })
@@ -84,7 +84,7 @@ export class LanguageComponent  extends SingleComponent implements OnInit, Singl
 
       this._languageService.update(language).subscribe({
         next: () => {
-          this.baseForm.snackBar.open({ content: "language successfully updated!" })
+          this.formService.snackBar.open({ content: "language successfully updated!" })
           this._router.navigate(["admin", "languages"]).then()
         }
       })
@@ -93,7 +93,7 @@ export class LanguageComponent  extends SingleComponent implements OnInit, Singl
 
       this._languageService.create(language).subscribe({
         next: () => {
-          this.baseForm.snackBar.open({ content: "language successfully created!" })
+          this.formService.snackBar.open({ content: "language successfully created!" })
           this._router.navigate(["admin", "languages"]).then()
         },
         error: err => console.log(err)

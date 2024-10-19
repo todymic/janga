@@ -1,36 +1,36 @@
-<form class="create-form" [formGroup]="baseForm.modelForm" (ngSubmit)="onSubmit($event)">
+<form class="create-form" [formGroup]="formService.formGroup" (ngSubmit)="onSubmit($event)">
   <mat-form-field class="field-full">
     <mat-label>Name</mat-label>
     <input matInput formControlName="name"/>
-    @if(baseForm.isValidField('name')) {
+    @if(formService.isValidField('name')) {
       <mat-error>This field is invalid</mat-error>
     }
   </mat-form-field>
   <mat-form-field class="field-full">
     <mat-label>Street</mat-label>
     <input matInput formControlName="street"/>
-    @if(baseForm.isValidField('street')) {
+    @if(formService.isValidField('street')) {
       <mat-error>This field is invalid</mat-error>
     }
   </mat-form-field>
   <mat-form-field class="field-full">
     <mat-label>city</mat-label>
     <input matInput formControlName="city"/>
-    @if(baseForm.isValidField('city')) {
+    @if(formService.isValidField('city')) {
       <mat-error>This field is invalid</mat-error>
     }
   </mat-form-field>
   <mat-form-field class="field-full">
     <mat-label>ZipCode</mat-label>
     <input matInput formControlName="zipcode"/>
-    @if(baseForm.isValidField('zipcode')) {
+    @if(formService.isValidField('zipcode')) {
       <mat-error>This field is invalid</mat-error>
     }
   </mat-form-field>
   <mat-form-field class="field-full">
     <mat-label>Country</mat-label>
     <input matInput formControlName="country"/>
-    @if(baseForm.isValidField('country')) {
+    @if(formService.isValidField('country')) {
       <mat-error>This field is invalid</mat-error>
     }
   </mat-form-field>
@@ -41,7 +41,7 @@
     }
 
     <button (click)="onReset()" mat-stroked-button type="button" class="">Cancel</button>
-    <button mat-flat-button type="submit" color="primary" [disabled]="!baseForm.modelForm.valid">
+    <button mat-flat-button type="submit" color="primary" [disabled]="!formService.formGroup.valid">
       @if(isEditContext) {
         Edit
       } @else {

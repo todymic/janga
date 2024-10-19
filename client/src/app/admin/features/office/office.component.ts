@@ -26,7 +26,7 @@ export class OfficeComponent extends SingleComponent implements OnInit {
   override ngOnInit(): void {
 
     // form group
-    this.baseForm.modelForm = this.baseForm.formBuilder.group({
+    this.formService.formGroup = this.formService.formBuilder.group({
       name: ['', Validators.required],
       street: ['', Validators.required],
       city: ['', Validators.required],
@@ -54,7 +54,7 @@ export class OfficeComponent extends SingleComponent implements OnInit {
 
       this.officeService.create(office).subscribe(() => {
 
-        this.baseForm.snackBar.open({
+        this.formService.snackBar.open({
           content: 'Office successfully created!!'
         });
 
@@ -68,7 +68,7 @@ export class OfficeComponent extends SingleComponent implements OnInit {
 
       this.officeService.update(office).subscribe(() => {
 
-        this.baseForm.snackBar.open({
+        this.formService.snackBar.open({
           content: 'Office successfully updated!!'
         });
 
@@ -84,7 +84,7 @@ export class OfficeComponent extends SingleComponent implements OnInit {
 
   onRemove() {
 
-    this.baseForm.dialog.confirm({
+    this.formService.dialog.confirm({
       title: 'Confirm delete',
       content: 'Are you really sure to delete this item?'
     })
@@ -93,7 +93,7 @@ export class OfficeComponent extends SingleComponent implements OnInit {
         if (confirm) {
           this.officeService.delete(this.currentId).subscribe(() => {
 
-            this.baseForm.snackBar.open({
+            this.formService.snackBar.open({
               content: 'Office successfully deleted'
             });
 
