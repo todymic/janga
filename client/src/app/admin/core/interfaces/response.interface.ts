@@ -1,6 +1,7 @@
 import {Practitioner} from "./practitioner.interface";
 import {Office} from "./office.interface";
 import {Language} from "./language.interface";
+import {Speciality} from "./speciality.interface";
 export interface GetPractitionerResponse {
   status: boolean,
   practitioner: Practitioner;
@@ -31,6 +32,17 @@ export interface GetLanguageResponse {
 export interface GetLanguagesResponse {
   status: boolean,
   languages: Language[];
+}
+
+// Speciality API response
+export interface GetSpecialityResponse {
+  status: boolean,
+  speciality: Speciality;
+}
+
+export interface GetSpecialitiesResponse {
+  status: boolean,
+  specialities: Speciality[];
 }
 export interface StatusExceptedResponse {
   status: boolean,
