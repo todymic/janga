@@ -1,15 +1,11 @@
-import {Component, inject, OnDestroy, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {OfficeService} from "../../core/services/office.service";
 import {ActivatedRoute, Event, Router} from "@angular/router";
-import {Office} from "../../core/interfaces/office.interface";
 import {MatButton} from "@angular/material/button";
 import {BaseFormService} from "../../core/services/base-form.service";
-import {ConfirmDeleteComponent} from "../../shared/components/dialog/confirm-delete/confirm-delete.component";
-import {Observable} from "rxjs";
-import {ConfirmDialog} from "../../core/interfaces/dialog.interface";
 
 @Component({
   selector: 'app-office',
@@ -66,12 +62,17 @@ export class OfficeComponent implements OnInit {
   }
 
   onSubmit($event: Event) {
+
     let office = this.officeForm.value;
 
     if (!this.isEditContext) { // CREATE context
 
       this.officeService.create(office).subscribe(() => {
-        this.baseForm.snackBar.open('Office successfully created!!');
+
+        this.baseForm.snackBar.open({
+          content: 'Office successfully created!!'
+        });
+
         this._router.navigate(['admin', 'offices']).then();
       })
 
@@ -81,8 +82,12 @@ export class OfficeComponent implements OnInit {
       office.id = this.currentId;
 
       this.officeService.update(office).subscribe(() => {
-        this.baseForm.snackBar.open('Office successfully updated!!');
-        this._router.navigate(['admin', 'offices']).then();
+
+        this.baseForm.snackBar.open({
+          content: 'Office successfully updated!!'
+        });
+
+        //this._router.navigate(['admin', 'offices']).then();
       })
 
     }
@@ -96,13 +101,19 @@ export class OfficeComponent implements OnInit {
   onRemove() {
 
     this.baseForm.dialog.confirm({
-      title: 'Confirm delete this item',
-      content: 'Do you confirm?'
+      title: 'Confirm delete',
+      content: 'Are you really sure to delete this item?',
+      confirmButtonColor: 'primary'
     })
       .subscribe((confirm: boolean) => {
+
         if (confirm) {
           this.officeService.delete(this.currentId).subscribe(() => {
-            this.baseForm.snackBar.open('Office successfully deleted');
+
+            this.baseForm.snackBar.open({
+              content: 'Office successfully deleted'
+            });
+
             this._router.navigate(['admin', 'offices']).then();
           })
         }

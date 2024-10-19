@@ -1,4 +1,5 @@
 export interface ConfirmDialog {
   title: string,
-  content: string
+  content: string,
+  confirmButtonColor?: string
 }

@@ -1,6 +1,6 @@
-import {inject, Injectable} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {MatDialog} from "@angular/material/dialog";
-import {ConfirmDeleteComponent} from "../../shared/components/dialog/confirm-delete/confirm-delete.component";
+import {ConfirmDialogComponent} from "../../shared/components/dialog/confirm-dialog/confirm-dialog.component";
 import {Observable} from "rxjs";
 import {ConfirmDialog} from "../interfaces/dialog.interface";
 
@@ -12,7 +12,7 @@ export class ConfirmDialogService {
   }
 
   confirm(data: ConfirmDialog): Observable<boolean> {
-    return this.dialog.open(ConfirmDeleteComponent, {
+    return this.dialog.open(ConfirmDialogComponent, {
       data,
       disableClose: true
     }).afterClosed()

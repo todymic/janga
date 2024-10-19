@@ -18,6 +18,8 @@ import {Office, Office as IOffice} from "../../core/interfaces/office.interface"
 import {OfficeService} from "../../core/services/office.service";
 import {ConfirmDialogService} from "../../core/services/confirm-dialog.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {SnackbarComponent} from "../../shared/components/snackbar/snackbar.component";
+import {SnackbarService} from "../../core/services/snackbar.service";
 
 @Component({
   selector: 'app-office-list',
@@ -45,7 +47,7 @@ export class OfficeListComponent implements AfterViewInit {
   dataSource: MatTableDataSource<IOffice> = new MatTableDataSource();
   officeService: OfficeService = inject(OfficeService);
   dialog: ConfirmDialogService = inject(ConfirmDialogService);
-  private _snackBar: MatSnackBar = inject(MatSnackBar)
+  private _snackBar: SnackbarService = inject(SnackbarService)
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -75,13 +77,13 @@ export class OfficeListComponent implements AfterViewInit {
   removeOffice(id: number) {
     this.dialog.confirm({
       title: "Confirm delete?",
-      content: "Are you sur to delete this item?"
+      content: "Are you sur to delete this office?"
     }).subscribe((confirm: boolean) => {
       if (confirm) {
         this.officeService
           .delete(id)
           .subscribe(() => {
-            this._snackBar.open('Office successfully deleted');
+            this._snackBar.open({ content: "office successfully deleted!!" });
             this.officeService.getAll().subscribe(offices => this.dataSource.data = offices)
 
           })

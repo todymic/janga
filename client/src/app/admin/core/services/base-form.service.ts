@@ -1,10 +1,7 @@
-import {inject, Injectable, OnDestroy} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
-import {MatSnackBar} from "@angular/material/snack-bar";
-import {Subscription} from "rxjs";
-import {MatDialog} from "@angular/material/dialog";
-import {Dialog} from "@angular/cdk/dialog";
 import {ConfirmDialogService} from "./confirm-dialog.service";
+import {SnackbarService} from "./snackbar.service";
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +9,8 @@ import {ConfirmDialogService} from "./confirm-dialog.service";
 export class BaseFormService  {
   formBuilder: FormBuilder = inject(FormBuilder);
   modelForm!: FormGroup;
-  snackBar = inject(MatSnackBar);
+  snackBar: SnackbarService = inject(SnackbarService);
   dialog: ConfirmDialogService = inject(ConfirmDialogService);
-
 
   constructor() { }
   isValidField(lastname: string): boolean | undefined {
