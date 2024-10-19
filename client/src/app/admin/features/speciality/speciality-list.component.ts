@@ -50,24 +50,23 @@ export class SpecialityListComponent extends ListComponent implements OnInit {
   }
 
   override onRemove(id: number) {
-   this._dialog.confirm({
-     title: "Confirm delete",
-     content: "Are you sure to delete this speciality?"
-   }).subscribe((confirm: boolean)=> {
+    this._dialog.confirm({
+      title: "Confirm delete",
+      content: "Are you sure to delete this speciality?"
+    }).subscribe((confirm: boolean) => {
 
-     if(confirm) {
+      if (confirm) {
 
-       this._specialityService.delete(id).subscribe(() => {
-         this._snackBar.open({
-           content: "Speciality successfully deleted!"
-         })
+        this._specialityService
+          .delete(id)
+          .subscribe(() => {
+            this._snackBar.open({content: "Speciality successfully deleted!"});
+            this.getAllData();
+          })
 
-         this.getAllData();
-       })
+      }
 
-     }
-
-   })
+    })
   }
 
 }

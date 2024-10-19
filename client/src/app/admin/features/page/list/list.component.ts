@@ -11,7 +11,7 @@ import {MatInput} from "@angular/material/input";
 import {ConfirmDialogService} from "../../../core/services/confirm-dialog.service";
 import {SnackbarService} from "../../../core/services/snackbar.service";
 import {Router, RouterOutlet} from "@angular/router";
-import {ListActionInterface} from "../../../core/interfaces/list_action.interface";
+import {ListPageInterface} from "../../../core/interfaces/list_page.interface";
 
 
 
@@ -35,7 +35,7 @@ import {ListActionInterface} from "../../../core/interfaces/list_action.interfac
   templateUrl: './list.component.html',
   styleUrl: './list.component.scss'
 })
-export class ListComponent implements AfterViewInit, ListActionInterface {
+export class ListComponent implements AfterViewInit, ListPageInterface {
   displayedColumns!: string[];
   dataSource = new MatTableDataSource();
   protected _dialog: ConfirmDialogService = inject(ConfirmDialogService);

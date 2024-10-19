@@ -1,4 +1,4 @@
-export interface ListActionInterface {
+export interface ListPageInterface {
   onEdit(id: number): void;
   onRemove(id: number): void;
   onCreate(): void;

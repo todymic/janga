@@ -1,11 +1,10 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
-import {FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {ReactiveFormsModule, Validators} from "@angular/forms";
 import {OfficeService} from "../../core/services/office.service";
-import {ActivatedRoute, Event, Router} from "@angular/router";
 import {MatButton} from "@angular/material/button";
-import {BaseFormService} from "../../core/services/base-form.service";
+import {SingleComponent} from "../page/single/single.component";
 
 @Component({
   selector: 'app-office',
@@ -20,24 +19,11 @@ import {BaseFormService} from "../../core/services/base-form.service";
   templateUrl: './office.component.html',
   styleUrl: './office.component.scss'
 })
-export class OfficeComponent implements OnInit {
-
-  officeForm!: FormGroup;
+export class OfficeComponent extends SingleComponent implements OnInit {
 
   officeService: OfficeService = inject(OfficeService);
 
-  baseForm: BaseFormService = inject(BaseFormService);
-
-  private _route: ActivatedRoute = inject(ActivatedRoute);
-
-  isEditContext: boolean = false;
-
-  currentId!: number;
-
-  constructor(private _router: Router) {
-  }
-
-  ngOnInit(): void {
+  override ngOnInit(): void {
 
     // form group
     this.baseForm.modelForm = this.baseForm.formBuilder.group({
@@ -48,22 +34,21 @@ export class OfficeComponent implements OnInit {
       country: ['', Validators.required]
     });
 
-    this.officeForm = this.baseForm.modelForm;
-
-    // Edit Context - get current id
-    this.currentId = this._route.snapshot.params['id'] as number;
+    super.ngOnInit();
 
     if (this.currentId) {
       this.officeService.getOne(this.currentId).subscribe((office) => {
-        this.officeForm.patchValue(office);
+        this.singleFormGroup.patchValue(office);
         this.isEditContext = true;
+        this._initialValue = office;
       });
     }
+
   }
 
   onSubmit($event: Event) {
 
-    let office = this.officeForm.value;
+    let office = this.singleFormGroup.value;
 
     if (!this.isEditContext) { // CREATE context
 
@@ -93,17 +78,15 @@ export class OfficeComponent implements OnInit {
     }
   }
 
-
-  onReset() {
-    this.officeForm.reset(this.officeForm.value)
+  onReset(): void {
+    this.singleFormGroup.reset(this._initialValue)
   }
 
   onRemove() {
 
     this.baseForm.dialog.confirm({
       title: 'Confirm delete',
-      content: 'Are you really sure to delete this item?',
-      confirmButtonColor: 'primary'
+      content: 'Are you really sure to delete this item?'
     })
       .subscribe((confirm: boolean) => {
 

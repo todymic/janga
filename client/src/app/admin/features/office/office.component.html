@@ -41,7 +41,7 @@
     }
 
     <button (click)="onReset()" mat-stroked-button type="button" class="">Cancel</button>
-    <button mat-flat-button type="submit" color="primary">
+    <button mat-flat-button type="submit" color="primary" [disabled]="!baseForm.modelForm.valid">
       @if(isEditContext) {
         Edit
       } @else {
