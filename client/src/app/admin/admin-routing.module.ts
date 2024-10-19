@@ -2,6 +2,7 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {PageNotFoundComponent} from "../page-not-found/page-not-found.component";
 import {AdminComponent} from "./admin.component";
+import {ListComponent} from "./features/page/list/list.component";
 
 const routes: Routes = [
   {
@@ -24,6 +25,14 @@ const routes: Routes = [
       {
         path: 'offices',
         loadChildren: () => import('./features/office/office.module').then(m => m.OfficeModule)
+      },
+      {
+        path: 'languages',
+        loadChildren: () => import('./features/language/language.module').then(m => m.LanguageModule)
+      },
+      {
+        path: 'specialities',
+        loadChildren: () => import('./features/speciality/speciality.module').then(m => m.SpecialityModule)
       }
     ]
   },

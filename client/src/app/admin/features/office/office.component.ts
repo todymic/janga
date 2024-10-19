@@ -87,7 +87,7 @@ export class OfficeComponent implements OnInit {
           content: 'Office successfully updated!!'
         });
 
-        //this._router.navigate(['admin', 'offices']).then();
+        this._router.navigate(['admin', 'offices']).then();
       })
 
     }
