@@ -34,38 +34,6 @@ class App {
     private connectDB(): void {
         const db = new Database();
         db.sequelize?.sync({force: true})
-            .then(() => {
-
-                //create office
-                Office.create({
-                    "name": "Cabinet Lanto",
-                    "street": "45 rue sigismond",
-                    "city": "Luxembourg",
-                    "zipcode": "L-52",
-                    "country": "Luxembourg"
-                }).then(() => {
-                    console.log('office created')
-                })
-
-
-                const languages = faker.helpers.multiple(createLanguages, {
-                    count: 5,
-                });
-                //languages
-                Language.bulkCreate(languages).then(() => {
-                    console.log('Languages created')
-                })
-
-                const specialities = faker.helpers.multiple(createSpecialities, {
-                    count: 5,
-                });
-                //specialities
-                Speciality.bulkCreate(specialities, {
-                    individualHooks: true
-                }).then(() => {
-                    console.log('médecine created')
-                })
-            })
 
     }
 
