@@ -1,0 +1,45 @@
+{
+    "name": "janga/app",
+    "autoload": {
+        "psr-4": {
+            "\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "todymic",
+            "email": "todisoa.razafindrabekoto@idp.lu"
+        }
+    ],
+    "require": {
+        "janga/client-ui": "dev-master",
+        "janga/api": "dev-main"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/todymic/janga-ui.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/todymic/janga-api.git"
+        }
+    ],
+    "config": {
+        "secure-http": false,
+        "allow-plugins": {
+            "composer/installers": true
+        }
+    },
+    "keywords": [
+        "client",
+        "api"
+    ],
+
+    "extra": {
+        "installer-paths": {
+            "./client": ["janga/client-ui"],
+            "./api": ["janga/api"]
+        }
+    }
+}
